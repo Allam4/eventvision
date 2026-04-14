@@ -1,1260 +1,3015 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>EventVision — AI Event Planning</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
-<style>
-:root{
---pink:#f9e8ec;
---pink-mid:#f0c4d0;
---pink-deep:#d48a9e;
---pink-dark:#a85870;
---beige:#f7f2ec;
---beige-mid:#e8ddd1;
---beige-dark:#c9b89e;
---cream:#fdfaf7;
---text:#2a1f1a;
---text-muted:#8a7570;
---text-light:#b8a8a3;
---white:#fff;
---border:rgba(180,150,140,.18);
---radius:14px;
---radius-lg:22px;
-}
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth;font-size:16px}
-body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EventVision — AI Event Planning</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --pink: #f9e8ec;
+      --pink-mid: #f0c4d0;
+      --pink-deep: #d48a9e;
+      --pink-dark: #a85870;
+      --beige: #f7f2ec;
+      --beige-mid: #e8ddd1;
+      --beige-dark: #c9b89e;
+      --cream: #fdfaf7;
+      --text: #2a1f1a;
+      --text-muted: #8a7570;
+      --text-light: #b8a8a3;
+      --white: #fff;
+      --border: rgba(180, 150, 140, .18);
+      --radius: 14px;
+      --radius-lg: 22px;
+    }
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(253,250,247,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:0 5vw;display:flex;align-items:center;justify-content:space-between;height:68px}
-.logo{font-family:'Cormorant Garamond',serif;font-size:1.65rem;font-weight:600;letter-spacing:.01em;color:var(--text)}
-.logo span{color:var(--pink-dark)}
-.nav-links{display:flex;align-items:center;gap:2rem;list-style:none}
-.nav-links a{font-size:.875rem;font-weight:400;color:var(--text-muted);text-decoration:none;letter-spacing:.03em;transition:color .2s}
-.nav-links a:hover{color:var(--text)}
-.nav-cta{background:var(--text);color:var(--white)!important;padding:.5rem 1.3rem;border-radius:100px;font-size:.8rem!important;font-weight:500!important;transition:background .2s!important}
-.nav-cta:hover{background:var(--pink-dark)!important}
-.nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
-.nav-hamburger span{display:block;width:22px;height:1.5px;background:var(--text);transition:.3s}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
 
-/* PAGES */
-.page{display:none;min-height:100vh;padding-top:68px}
-.page.active{display:block}
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px
+    }
 
-/* ───────── HOME ───────── */
-#home{background:var(--cream)}
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      overflow-x: hidden
+    }
 
-.hero{min-height:calc(100vh - 68px);display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:4rem;padding:5rem 5vw 3rem}
-.hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:var(--pink);color:var(--pink-dark);font-size:.75rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:.45rem 1rem;border-radius:100px;margin-bottom:1.5rem;border:1px solid var(--pink-mid)}
-.hero-badge::before{content:'';width:6px;height:6px;background:var(--pink-dark);border-radius:50%;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.8rem,5vw,4.2rem);font-weight:300;line-height:1.15;letter-spacing:-.01em;color:var(--text)}
-.hero h1 em{font-style:italic;color:var(--pink-dark)}
-.hero-sub{margin-top:1.25rem;font-size:1.05rem;font-weight:300;color:var(--text-muted);line-height:1.7;max-width:420px}
-.hero-actions{margin-top:2rem;display:flex;gap:1rem;align-items:center;flex-wrap:wrap}
-.btn-primary{background:var(--text);color:var(--white);padding:.85rem 2rem;border-radius:100px;font-size:.9rem;font-weight:500;border:none;cursor:pointer;transition:all .2s;letter-spacing:.02em}
-.btn-primary:hover{background:var(--pink-dark);transform:translateY(-1px)}
-.btn-outline{background:transparent;color:var(--text);padding:.85rem 2rem;border-radius:100px;font-size:.9rem;font-weight:400;border:1.5px solid var(--beige-mid);cursor:pointer;transition:all .2s}
-.btn-outline:hover{border-color:var(--beige-dark);background:var(--beige)}
-.hero-trust{margin-top:2.5rem;display:flex;align-items:center;gap:1rem}
-.trust-avatars{display:flex}
-.trust-avatars span{width:32px;height:32px;border-radius:50%;border:2px solid var(--white);margin-left:-10px;font-size:.65rem;font-weight:500;display:flex;align-items:center;justify-content:center;color:var(--white)}
-.trust-avatars span:first-child{margin-left:0}
-.ta1{background:linear-gradient(135deg,#d48a9e,#a85870)}
-.ta2{background:linear-gradient(135deg,#c9b89e,#a89070)}
-.ta3{background:linear-gradient(135deg,#b0c4de,#7898b8)}
-.ta4{background:linear-gradient(135deg,#c4b5d4,#9070a8)}
-.trust-text{font-size:.8rem;color:var(--text-muted);font-weight:300}
-.trust-text strong{color:var(--text);font-weight:500}
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(253, 250, 247, .92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 5vw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px
+    }
 
-.hero-visual{position:relative}
-.hero-card-main{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden;box-shadow:0 30px 80px rgba(100,60,50,.1)}
-.hero-img-placeholder{width:100%;height:320px;background:linear-gradient(145deg,var(--pink) 0%,var(--beige-mid) 50%,var(--pink-mid) 100%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-.hero-img-placeholder::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d48a9e' fill-opacity='0.08'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
-.hero-img-icon{font-size:4rem;opacity:.4}
-.hero-card-info{padding:1.25rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
-.event-tag{font-size:.72rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;background:var(--pink);color:var(--pink-dark);padding:.3rem .75rem;border-radius:100px}
-.event-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;margin-top:.3rem}
-.event-date{font-size:.8rem;color:var(--text-muted)}
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.65rem;
+      font-weight: 600;
+      letter-spacing: .01em;
+      color: var(--text)
+    }
 
-.floating-cards{position:absolute;top:-20px;right:-30px;display:flex;flex-direction:column;gap:.75rem}
-.fcard{background:var(--white);border-radius:12px;border:1px solid var(--border);padding:.75rem 1rem;box-shadow:0 8px 24px rgba(100,60,50,.08);min-width:160px;animation:float 4s ease-in-out infinite}
-.fcard:nth-child(2){animation-delay:1.5s;right:-10px}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-.fcard-label{font-size:.68rem;color:var(--text-light);font-weight:500;letter-spacing:.04em;text-transform:uppercase}
-.fcard-value{font-size:.95rem;font-weight:500;color:var(--text);margin-top:.2rem}
-.fcard-icon{font-size:1.1rem;margin-bottom:.3rem}
+    .logo span {
+      color: var(--pink-dark)
+    }
 
-/* SECTION COMMONS */
-section{padding:5rem 5vw}
-.section-tag{display:inline-block;font-size:.72rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--pink-dark);margin-bottom:.75rem;background:var(--pink);padding:.35rem .9rem;border-radius:100px;border:1px solid var(--pink-mid)}
-.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:300;line-height:1.2;letter-spacing:-.01em}
-.section-title em{font-style:italic;color:var(--pink-dark)}
-.section-sub{margin-top:.85rem;font-size:1rem;font-weight:300;color:var(--text-muted);line-height:1.7;max-width:560px}
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none
+    }
 
-/* HOW IT WORKS */
-.how-it-works{background:var(--white)}
-.steps-grid{margin-top:3.5rem;display:grid;grid-template-columns:repeat(3,1fr);gap:2rem}
-.step-card{padding:2rem;border:1px solid var(--border);border-radius:var(--radius-lg);position:relative;transition:all .3s;background:var(--cream)}
-.step-card:hover{border-color:var(--pink-mid);transform:translateY(-4px);box-shadow:0 16px 48px rgba(180,100,120,.08)}
-.step-num{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:300;color:var(--pink-mid);line-height:1;margin-bottom:.75rem}
-.step-icon{font-size:1.5rem;margin-bottom:.75rem}
-.step-title{font-size:1rem;font-weight:500;margin-bottom:.5rem}
-.step-text{font-size:.875rem;color:var(--text-muted);line-height:1.65;font-weight:300}
-.step-connector{position:absolute;top:50%;right:-1rem;width:2rem;height:1px;background:var(--pink-mid)}
-.step-card:last-child .step-connector{display:none}
+    .nav-links a {
+      font-size: .875rem;
+      font-weight: 400;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: .03em;
+      transition: color .2s
+    }
 
-/* EVENT TYPES */
-.event-types{background:var(--beige)}
-.types-grid{margin-top:3rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem}
-.type-pill{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem 1rem;text-align:center;cursor:pointer;transition:all .3s}
-.type-pill:hover,.type-pill.active{background:var(--text);border-color:var(--text);color:var(--white)}
-.type-pill:hover .type-icon,.type-pill.active .type-icon{filter:grayscale(1) brightness(5)}
-.type-icon{font-size:2rem;margin-bottom:.6rem}
-.type-name{font-size:.875rem;font-weight:500;letter-spacing:.02em}
-.type-count{font-size:.72rem;color:var(--text-muted);margin-top:.25rem;transition:color .3s}
-.type-pill:hover .type-count,.type-pill.active .type-count{color:rgba(255,255,255,.6)}
+    .nav-links a:hover {
+      color: var(--text)
+    }
 
-/* FEATURES */
-.features-section{background:var(--white)}
-.features-grid{margin-top:3.5rem;display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
-.feature-card{padding:2rem;border-radius:var(--radius-lg);border:1px solid var(--border);background:var(--cream);transition:all .3s}
-.feature-card:hover{border-color:var(--pink-mid);box-shadow:0 8px 32px rgba(180,100,120,.07)}
-.feature-card.highlight{background:var(--text);border-color:var(--text);color:var(--white);grid-column:span 2}
-.feature-card.highlight .feature-icon{background:rgba(255,255,255,.1)}
-.feature-card.highlight .feature-title{color:var(--white)}
-.feature-card.highlight .feature-desc{color:rgba(255,255,255,.65)}
-.feature-icon{width:44px;height:44px;border-radius:12px;background:var(--pink);display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:1.25rem;flex-shrink:0}
-.feature-title{font-size:1.05rem;font-weight:500;margin-bottom:.5rem}
-.feature-desc{font-size:.875rem;line-height:1.65;color:var(--text-muted);font-weight:300}
-.feature-card.highlight .feature-inner{display:flex;gap:3rem;align-items:center}
-.feature-card.highlight .feature-content{flex:1}
-.feature-card.highlight .feature-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5rem;flex:1}
-.stat-item{text-align:center}
-.stat-num{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:300;color:var(--white);line-height:1}
-.stat-label{font-size:.75rem;color:rgba(255,255,255,.5);margin-top:.3rem;letter-spacing:.04em;text-transform:uppercase}
+    .nav-cta {
+      background: var(--text);
+      color: var(--white) !important;
+      padding: .5rem 1.3rem;
+      border-radius: 100px;
+      font-size: .8rem !important;
+      font-weight: 500 !important;
+      transition: background .2s !important
+    }
 
-/* TESTIMONIALS */
-.testimonials{background:var(--pink)}
-.testi-grid{margin-top:3rem;display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
-.testi-card{background:var(--white);border-radius:var(--radius-lg);padding:1.75rem;border:1px solid var(--border)}
-.testi-stars{color:var(--pink-deep);font-size:.85rem;margin-bottom:1rem;letter-spacing:2px}
-.testi-quote{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;line-height:1.6;color:var(--text);font-style:italic}
-.testi-author{margin-top:1.25rem;display:flex;align-items:center;gap:.75rem}
-.testi-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:500;color:var(--white)}
-.testi-name{font-size:.875rem;font-weight:500}
-.testi-event{font-size:.75rem;color:var(--text-muted)}
+    .nav-cta:hover {
+      background: var(--pink-dark) !important
+    }
 
-/* CTA BANNER */
-.cta-banner{background:var(--text);padding:5rem 5vw;text-align:center}
-.cta-banner h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:300;color:var(--white);line-height:1.2}
-.cta-banner h2 em{font-style:italic;color:var(--pink-mid)}
-.cta-banner p{margin-top:1rem;color:rgba(255,255,255,.5);font-size:1rem;font-weight:300;max-width:480px;margin-inline:auto}
-.cta-banner .cta-actions{margin-top:2rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
-.btn-white{background:var(--white);color:var(--text);padding:.85rem 2rem;border-radius:100px;font-size:.9rem;font-weight:500;border:none;cursor:pointer;transition:all .2s}
-.btn-white:hover{background:var(--pink);transform:translateY(-1px)}
-.btn-ghost{background:transparent;color:rgba(255,255,255,.7);padding:.85rem 2rem;border-radius:100px;font-size:.9rem;font-weight:400;border:1.5px solid rgba(255,255,255,.2);cursor:pointer;transition:all .2s}
-.btn-ghost:hover{border-color:rgba(255,255,255,.4);color:var(--white)}
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px
+    }
 
-/* ───────── DESIGN TOOL PAGE ───────── */
-#design-tool{background:var(--cream)}
-.tool-header{padding:4rem 5vw 2rem;text-align:center}
-.tool-layout{display:grid;grid-template-columns:1fr 1fr;gap:3rem;padding:0 5vw 5rem;align-items:start}
-.tool-form{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--border);padding:2rem}
-.form-section{margin-bottom:1.75rem}
-.form-label{font-size:.8rem;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.6rem;display:block}
-.upload-zone{border:2px dashed var(--beige-mid);border-radius:var(--radius);padding:2.5rem;text-align:center;cursor:pointer;transition:all .3s;background:var(--beige)}
-.upload-zone:hover{border-color:var(--pink-deep);background:var(--pink)}
-.upload-icon{font-size:2rem;margin-bottom:.75rem}
-.upload-text{font-size:.875rem;color:var(--text-muted);font-weight:300}
-.upload-text strong{color:var(--text);font-weight:500;display:block;margin-bottom:.25rem}
-.form-input{width:100%;padding:.75rem 1rem;border:1.5px solid var(--beige-mid);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--text);background:var(--cream);transition:border-color .2s;outline:none;resize:vertical}
-.form-input:focus{border-color:var(--pink-deep)}
-.form-textarea{min-height:100px}
-.color-swatches{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.5rem}
-.swatch{width:32px;height:32px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;transition:all .2s;position:relative}
-.swatch.selected::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.65rem;color:var(--white);font-weight:600}
-.swatch:hover{transform:scale(1.15)}
-.style-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem}
-.style-btn{padding:.6rem;border:1.5px solid var(--beige-mid);border-radius:8px;font-size:.8rem;font-weight:400;text-align:center;cursor:pointer;background:var(--cream);color:var(--text);transition:all .2s}
-.style-btn.active,.style-btn:hover{background:var(--text);color:var(--white);border-color:var(--text)}
-.submit-btn{width:100%;background:var(--text);color:var(--white);padding:1rem;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:500;cursor:pointer;transition:all .2s;margin-top:.5rem}
-.submit-btn:hover{background:var(--pink-dark)}
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      background: var(--text);
+      transition: .3s
+    }
 
-.tool-preview{position:sticky;top:90px}
-.preview-card{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden}
-.preview-header{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-.preview-title-sm{font-size:.85rem;font-weight:500}
-.preview-status{font-size:.72rem;color:var(--pink-dark);background:var(--pink);padding:.25rem .6rem;border-radius:100px;border:1px solid var(--pink-mid)}
-.preview-canvas{height:360px;background:linear-gradient(145deg,var(--pink) 0%,var(--beige-mid) 40%,var(--pink-mid) 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;padding:2rem}
-.preview-placeholder-icon{font-size:3rem;opacity:.35}
-.preview-placeholder-text{font-size:.875rem;color:var(--text-muted);text-align:center;line-height:1.6;font-weight:300}
-.preview-mockup{display:grid;grid-template-columns:1fr 1fr;gap:1rem;width:100%}
-.pm-card{background:rgba(255,255,255,.7);border-radius:12px;padding:1.25rem;border:1px solid rgba(255,255,255,.8)}
-.pm-label{font-size:.68rem;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:var(--pink-dark);margin-bottom:.4rem}
-.pm-value{font-size:.85rem;font-weight:500;color:var(--text)}
+    /* PAGES */
+    .page {
+      display: none;
+      min-height: 100vh;
+      padding-top: 68px
+    }
 
-/* ───────── VENDORS MARKETPLACE ───────── */
-#vendors{background:var(--cream)}
-.vendors-header{padding:4rem 5vw 2rem}
-.vendors-filters{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:2rem;padding:0 5vw 2rem}
-.filter-btn{padding:.5rem 1.2rem;border:1.5px solid var(--beige-mid);border-radius:100px;font-size:.8rem;font-weight:400;cursor:pointer;background:var(--white);color:var(--text-muted);transition:all .2s}
-.filter-btn.active,.filter-btn:hover{background:var(--text);color:var(--white);border-color:var(--text)}
-.vendors-grid{padding:0 5vw 5rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem}
-.vendor-card{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden;transition:all .3s;cursor:pointer}
-.vendor-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(100,60,50,.1);border-color:var(--pink-mid)}
-.vendor-cover{height:200px;display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative}
-.vc1{background:linear-gradient(135deg,#f9e8ec,#f0c4d0)}
-.vc2{background:linear-gradient(135deg,#f7f2ec,#e8ddd1)}
-.vc3{background:linear-gradient(135deg,#e8f0f9,#c4d4e8)}
-.vc4{background:linear-gradient(135deg,#f0ece8,#ddd4c8)}
-.vc5{background:linear-gradient(135deg,#ecf9f0,#c4e8d4)}
-.vc6{background:linear-gradient(135deg,#f9ecf9,#e4c4e8)}
-.vendor-badge{position:absolute;top:12px;right:12px;background:var(--white);border-radius:100px;font-size:.68rem;font-weight:500;padding:.3rem .7rem;color:var(--text);border:1px solid var(--border)}
-.vendor-body{padding:1.25rem}
-.vendor-cat{font-size:.7rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--pink-dark);margin-bottom:.35rem}
-.vendor-name{font-size:1.05rem;font-weight:500;margin-bottom:.35rem}
-.vendor-desc{font-size:.825rem;color:var(--text-muted);font-weight:300;line-height:1.55;margin-bottom:1rem}
-.vendor-footer{display:flex;align-items:center;justify-content:space-between}
-.vendor-rating{display:flex;align-items:center;gap:.35rem;font-size:.8rem;color:var(--text-muted)}
-.vendor-stars{color:var(--pink-deep);letter-spacing:1px}
-.vendor-price{font-size:.8rem;font-weight:500;color:var(--text)}
+    .page.active {
+      display: block
+    }
 
-/* JOIN VENDOR */
-.join-vendor-section{background:var(--beige);padding:4rem 5vw;margin:0 5vw 3rem;border-radius:var(--radius-lg)}
-.join-inner{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
-.join-perks{margin-top:1.5rem;display:flex;flex-direction:column;gap:.75rem}
-.perk{display:flex;align-items:flex-start;gap:.75rem}
-.perk-icon{width:32px;height:32px;border-radius:8px;background:var(--pink);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
-.perk-text{font-size:.875rem;color:var(--text-muted);font-weight:300;line-height:1.55}
-.perk-text strong{color:var(--text);font-weight:500;display:block}
-.join-form{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--border);padding:2rem}
-.join-form h3{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;margin-bottom:1.5rem}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
-.form-field{margin-bottom:1rem}
-.form-field:last-child{margin-bottom:0}
+    /* ───────── HOME ───────── */
+    #home {
+      background: var(--cream)
+    }
 
-/* ───────── ABOUT ───────── */
-#about{background:var(--cream)}
-.about-hero{padding:5rem 5vw;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
-.about-visual{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden}
-.about-img{height:400px;background:linear-gradient(145deg,var(--pink) 0%,var(--beige-mid) 50%,var(--pink-mid) 100%);display:flex;align-items:center;justify-content:center;font-size:5rem;opacity:.4}
-.about-caption{padding:1.5rem;border-top:1px solid var(--border)}
-.about-caption-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400}
-.about-caption-sub{font-size:.8rem;color:var(--text-muted);margin-top:.25rem}
-.about-content .section-tag{margin-bottom:1rem}
-.about-content h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,4vw,3.2rem);font-weight:300;line-height:1.2;letter-spacing:-.01em}
-.about-content h1 em{font-style:italic;color:var(--pink-dark)}
-.about-content p{margin-top:1rem;font-size:.95rem;font-weight:300;color:var(--text-muted);line-height:1.75}
-.values-section{padding:0 5vw 5rem}
-.values-grid{margin-top:3rem;display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
-.value-card{padding:2rem;border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--white)}
-.value-icon{font-size:1.75rem;margin-bottom:1rem}
-.value-title{font-size:1rem;font-weight:500;margin-bottom:.5rem}
-.value-text{font-size:.85rem;color:var(--text-muted);line-height:1.65;font-weight:300}
-.team-section{background:var(--pink);padding:5rem 5vw}
-.team-grid{margin-top:3rem;display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem}
-.team-card{background:var(--white);border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--border);text-align:center}
-.team-photo{height:160px;display:flex;align-items:center;justify-content:center;font-size:3rem}
-.tp1{background:linear-gradient(135deg,#f9e8ec,#f0c4d0)}
-.tp2{background:linear-gradient(135deg,#f7f2ec,#e8ddd1)}
-.tp3{background:linear-gradient(135deg,#e8f0f9,#c4d4e8)}
-.tp4{background:linear-gradient(135deg,#ecf9f0,#c4e8d4)}
-.team-info{padding:1rem}
-.team-name{font-size:.9rem;font-weight:500}
-.team-role{font-size:.75rem;color:var(--text-muted);margin-top:.2rem}
+    .hero {
+      min-height: calc(100vh - 68px);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 4rem;
+      padding: 5rem 5vw 3rem
+    }
 
-/* ───────── VENDOR PROFILE ───────── */
-#vendor-profile{background:var(--cream)}
-.profile-header{background:var(--white);border-bottom:1px solid var(--border);padding:3rem 5vw}
-.profile-top{display:flex;align-items:flex-start;gap:2rem}
-.profile-avatar{width:80px;height:80px;border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-size:2rem;flex-shrink:0}
-.profile-meta h1{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:400}
-.profile-meta .vendor-cat{font-size:.75rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--pink-dark);margin-bottom:.4rem}
-.profile-meta p{font-size:.9rem;color:var(--text-muted);font-weight:300;max-width:560px;margin-top:.5rem;line-height:1.65}
-.profile-stats{display:flex;gap:2rem;margin-top:1.5rem}
-.pstat{text-align:center}
-.pstat-num{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300}
-.pstat-label{font-size:.72rem;color:var(--text-muted);letter-spacing:.04em;text-transform:uppercase}
-.profile-actions{margin-top:1.5rem;display:flex;gap:1rem}
-.profile-body{display:grid;grid-template-columns:2fr 1fr;gap:2rem;padding:3rem 5vw}
-.portfolio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
-.portfolio-item{border-radius:12px;overflow:hidden;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:2.5rem;cursor:pointer;transition:transform .3s}
-.portfolio-item:hover{transform:scale(1.03)}
-.pi1{background:linear-gradient(135deg,#f9e8ec,#f0c4d0)}
-.pi2{background:linear-gradient(135deg,#f7f2ec,#e8ddd1)}
-.pi3{background:linear-gradient(135deg,#e8f0f9,#c4d4e8)}
-.pi4{background:linear-gradient(135deg,#f0ece8,#ddd4c8)}
-.pi5{background:linear-gradient(135deg,#ecf9f0,#c4e8d4)}
-.pi6{background:linear-gradient(135deg,#f9ecf9,#e4c4e8)}
-.sidebar-card{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--border);padding:1.5rem;margin-bottom:1.5rem}
-.sidebar-card h3{font-size:.95rem;font-weight:500;margin-bottom:1rem;padding-bottom:.75rem;border-bottom:1px solid var(--border)}
-.package-item{padding:.75rem 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-.package-item:last-child{border-bottom:none;padding-bottom:0}
-.package-name{font-size:.875rem;font-weight:500}
-.package-desc{font-size:.75rem;color:var(--text-muted);margin-top:.15rem}
-.package-price{font-size:.9rem;font-weight:500;color:var(--pink-dark)}
-.inquiry-btn{width:100%;background:var(--text);color:var(--white);padding:.9rem;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:500;cursor:pointer;transition:background .2s}
-.inquiry-btn:hover{background:var(--pink-dark)}
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: var(--pink);
+      color: var(--pink-dark);
+      font-size: .75rem;
+      font-weight: 500;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: .45rem 1rem;
+      border-radius: 100px;
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--pink-mid)
+    }
 
-/* FOOTER */
-footer{background:var(--text);padding:4rem 5vw 2rem;color:rgba(255,255,255,.6)}
-.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem}
-.footer-brand .logo{color:var(--white);display:block;margin-bottom:.75rem}
-.footer-brand p{font-size:.85rem;line-height:1.65;color:rgba(255,255,255,.4);max-width:260px;font-weight:300}
-.footer-col h4{font-size:.75rem;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:1rem}
-.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.6rem}
-.footer-col ul a{font-size:.875rem;color:rgba(255,255,255,.55);text-decoration:none;transition:color .2s;font-weight:300}
-.footer-col ul a:hover{color:var(--white)}
-.footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:1.5rem;display:flex;align-items:center;justify-content:space-between;font-size:.8rem;color:rgba(255,255,255,.3)}
+    .hero-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--pink-dark);
+      border-radius: 50%;
+      animation: pulse 2s infinite
+    }
 
-/* RESPONSIVE */
-@media(max-width:900px){
-  .hero{grid-template-columns:1fr;padding:3rem 5vw}
-  .hero-visual{display:none}
-  .steps-grid{grid-template-columns:1fr}
-  .step-connector{display:none}
-  .features-grid{grid-template-columns:1fr}
-  .feature-card.highlight{grid-column:span 1}
-  .feature-card.highlight .feature-inner{flex-direction:column;gap:1.5rem}
-  .testi-grid{grid-template-columns:1fr}
-  .tool-layout{grid-template-columns:1fr}
-  .tool-preview{display:none}
-  .join-inner{grid-template-columns:1fr}
-  .about-hero{grid-template-columns:1fr}
-  .about-visual{display:none}
-  .values-grid{grid-template-columns:1fr 1fr}
-  .team-grid{grid-template-columns:1fr 1fr}
-  .profile-body{grid-template-columns:1fr}
-  .portfolio-grid{grid-template-columns:repeat(2,1fr)}
-  .footer-grid{grid-template-columns:1fr 1fr}
-  .nav-links{display:none}
-  .nav-links.open{display:flex;flex-direction:column;position:absolute;top:68px;left:0;right:0;background:rgba(253,250,247,.98);border-bottom:1px solid var(--border);padding:1.5rem 5vw;gap:1.25rem}
-  .nav-hamburger{display:flex}
-  .form-row{grid-template-columns:1fr}
-}
-@media(max-width:600px){
-  .values-grid{grid-template-columns:1fr}
-  .team-grid{grid-template-columns:1fr 1fr}
-  .profile-stats{gap:1rem}
-  .footer-grid{grid-template-columns:1fr}
-  .footer-brand{margin-bottom:1rem}
-}
+    @keyframes pulse {
 
-/* ANIMATIONS */
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.fade-up{animation:fadeUp .6s ease forwards}
-.fade-up-delay{animation:fadeUp .6s ease .15s forwards;opacity:0}
-.fade-up-delay2{animation:fadeUp .6s ease .3s forwards;opacity:0}
+      0%,
+      100% {
+        opacity: 1
+      }
 
-/* Notification toast */
-.toast{position:fixed;bottom:2rem;right:2rem;background:var(--text);color:var(--white);padding:.85rem 1.5rem;border-radius:12px;font-size:.875rem;z-index:999;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none}
-.toast.show{opacity:1;transform:translateY(0)}
+      50% {
+        opacity: .4
+      }
+    }
 
-/* WhatsApp FAB */
-.wa-fab{position:fixed;bottom:2rem;left:2rem;z-index:998;display:flex;flex-direction:column;align-items:flex-start;gap:.5rem}
-.wa-btn{display:flex;align-items:center;gap:.65rem;background:#25D366;color:#fff;border:none;border-radius:100px;padding:.75rem 1.2rem .75rem 1rem;font-family:'DM Sans',sans-serif;font-size:.875rem;font-weight:500;cursor:pointer;box-shadow:0 4px 20px rgba(37,211,102,.35);transition:all .25s}
-.wa-btn:hover{background:#1ebe5d;transform:translateY(-2px);box-shadow:0 8px 28px rgba(37,211,102,.4)}
-.wa-btn svg{width:20px;height:20px;fill:#fff;flex-shrink:0}
-.wa-label{font-size:.72rem;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:#25D366;margin-left:.5rem;opacity:.8}
-</style>
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 5vw, 4.2rem);
+      font-weight: 300;
+      line-height: 1.15;
+      letter-spacing: -.01em;
+      color: var(--text)
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--pink-dark)
+    }
+
+    .hero-sub {
+      margin-top: 1.25rem;
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 420px
+    }
+
+    .hero-actions {
+      margin-top: 2rem;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap
+    }
+
+    .btn-primary {
+      background: var(--text);
+      color: var(--white);
+      padding: .85rem 2rem;
+      border-radius: 100px;
+      font-size: .9rem;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      transition: all .2s;
+      letter-spacing: .02em
+    }
+
+    .btn-primary:hover {
+      background: var(--pink-dark);
+      transform: translateY(-1px)
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      padding: .85rem 2rem;
+      border-radius: 100px;
+      font-size: .9rem;
+      font-weight: 400;
+      border: 1.5px solid var(--beige-mid);
+      cursor: pointer;
+      transition: all .2s
+    }
+
+    .btn-outline:hover {
+      border-color: var(--beige-dark);
+      background: var(--beige)
+    }
+
+    .hero-trust {
+      margin-top: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem
+    }
+
+    .trust-avatars {
+      display: flex
+    }
+
+    .trust-avatars span {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid var(--white);
+      margin-left: -10px;
+      font-size: .65rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white)
+    }
+
+    .trust-avatars span:first-child {
+      margin-left: 0
+    }
+
+    .ta1 {
+      background: linear-gradient(135deg, #d48a9e, #a85870)
+    }
+
+    .ta2 {
+      background: linear-gradient(135deg, #c9b89e, #a89070)
+    }
+
+    .ta3 {
+      background: linear-gradient(135deg, #b0c4de, #7898b8)
+    }
+
+    .ta4 {
+      background: linear-gradient(135deg, #c4b5d4, #9070a8)
+    }
+
+    .trust-text {
+      font-size: .8rem;
+      color: var(--text-muted);
+      font-weight: 300
+    }
+
+    .trust-text strong {
+      color: var(--text);
+      font-weight: 500
+    }
+
+    .hero-visual {
+      position: relative
+    }
+
+    .hero-card-main {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(100, 60, 50, .1)
+    }
+
+    .hero-img-placeholder {
+      width: 100%;
+      height: 320px;
+      background: linear-gradient(145deg, var(--pink) 0%, var(--beige-mid) 50%, var(--pink-mid) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden
+    }
+
+    .hero-img-placeholder::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d48a9e' fill-opacity='0.08'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")
+    }
+
+    .hero-img-icon {
+      font-size: 4rem;
+      opacity: .4
+    }
+
+    .hero-card-info {
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between
+    }
+
+    .event-tag {
+      font-size: .72rem;
+      font-weight: 500;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      background: var(--pink);
+      color: var(--pink-dark);
+      padding: .3rem .75rem;
+      border-radius: 100px
+    }
+
+    .event-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-top: .3rem
+    }
+
+    .event-date {
+      font-size: .8rem;
+      color: var(--text-muted)
+    }
+
+    .floating-cards {
+      position: absolute;
+      top: -20px;
+      right: -30px;
+      display: flex;
+      flex-direction: column;
+      gap: .75rem
+    }
+
+    .fcard {
+      background: var(--white);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: .75rem 1rem;
+      box-shadow: 0 8px 24px rgba(100, 60, 50, .08);
+      min-width: 160px;
+      animation: float 4s ease-in-out infinite
+    }
+
+    .fcard:nth-child(2) {
+      animation-delay: 1.5s;
+      right: -10px
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0)
+      }
+
+      50% {
+        transform: translateY(-6px)
+      }
+    }
+
+    .fcard-label {
+      font-size: .68rem;
+      color: var(--text-light);
+      font-weight: 500;
+      letter-spacing: .04em;
+      text-transform: uppercase
+    }
+
+    .fcard-value {
+      font-size: .95rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-top: .2rem
+    }
+
+    .fcard-icon {
+      font-size: 1.1rem;
+      margin-bottom: .3rem
+    }
+
+    /* SECTION COMMONS */
+    section {
+      padding: 5rem 5vw
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-size: .72rem;
+      font-weight: 500;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--pink-dark);
+      margin-bottom: .75rem;
+      background: var(--pink);
+      padding: .35rem .9rem;
+      border-radius: 100px;
+      border: 1px solid var(--pink-mid)
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 300;
+      line-height: 1.2;
+      letter-spacing: -.01em
+    }
+
+    .section-title em {
+      font-style: italic;
+      color: var(--pink-dark)
+    }
+
+    .section-sub {
+      margin-top: .85rem;
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 560px
+    }
+
+    /* HOW IT WORKS */
+    .how-it-works {
+      background: var(--white)
+    }
+
+    .steps-grid {
+      margin-top: 3.5rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem
+    }
+
+    .step-card {
+      padding: 2rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      position: relative;
+      transition: all .3s;
+      background: var(--cream)
+    }
+
+    .step-card:hover {
+      border-color: var(--pink-mid);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(180, 100, 120, .08)
+    }
+
+    .step-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem;
+      font-weight: 300;
+      color: var(--pink-mid);
+      line-height: 1;
+      margin-bottom: .75rem
+    }
+
+    .step-icon {
+      font-size: 1.5rem;
+      margin-bottom: .75rem
+    }
+
+    .step-title {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: .5rem
+    }
+
+    .step-text {
+      font-size: .875rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      font-weight: 300
+    }
+
+    .step-connector {
+      position: absolute;
+      top: 50%;
+      right: -1rem;
+      width: 2rem;
+      height: 1px;
+      background: var(--pink-mid)
+    }
+
+    .step-card:last-child .step-connector {
+      display: none
+    }
+
+    /* EVENT TYPES */
+    .event-types {
+      background: var(--beige)
+    }
+
+    .types-grid {
+      margin-top: 3rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem
+    }
+
+    .type-pill {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all .3s
+    }
+
+    .type-pill:hover,
+    .type-pill.active {
+      background: var(--text);
+      border-color: var(--text);
+      color: var(--white)
+    }
+
+    .type-icon {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 1.25rem;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid var(--pink-mid);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      transition: transform .3s
+    }
+
+    .type-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: var(--cream)
+    }
+
+    .type-pill:hover .type-icon,
+    .type-pill.active .type-icon {
+      transform: scale(1.08);
+      border-color: var(--white)
+    }
+
+    .type-name {
+      font-size: .875rem;
+      font-weight: 500;
+      letter-spacing: .02em
+    }
+
+    .type-count {
+      font-size: .72rem;
+      color: var(--text-muted);
+      margin-top: .25rem;
+      transition: color .3s
+    }
+
+    .type-pill:hover .type-count,
+    .type-pill.active .type-count {
+      color: rgba(255, 255, 255, .6)
+    }
+
+    /* FEATURES */
+    .features-section {
+      background: var(--white)
+    }
+
+    .features-grid {
+      margin-top: 3.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem
+    }
+
+    .feature-card {
+      padding: 2rem;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      background: var(--cream);
+      transition: all .3s
+    }
+
+    .feature-card:hover {
+      border-color: var(--pink-mid);
+      box-shadow: 0 8px 32px rgba(180, 100, 120, .07)
+    }
+
+    .feature-card.highlight {
+      background: var(--text);
+      border-color: var(--text);
+      color: var(--white);
+      grid-column: span 2
+    }
+
+    .feature-card.highlight .feature-icon {
+      background: rgba(255, 255, 255, .1)
+    }
+
+    .feature-card.highlight .feature-title {
+      color: var(--white)
+    }
+
+    .feature-card.highlight .feature-desc {
+      color: rgba(255, 255, 255, .65)
+    }
+
+    .feature-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--pink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      margin-bottom: 1.25rem;
+      flex-shrink: 0
+    }
+
+    .feature-title {
+      font-size: 1.05rem;
+      font-weight: 500;
+      margin-bottom: .5rem
+    }
+
+    .feature-desc {
+      font-size: .875rem;
+      line-height: 1.65;
+      color: var(--text-muted);
+      font-weight: 300
+    }
+
+    .feature-card.highlight .feature-inner {
+      display: flex;
+      gap: 3rem;
+      align-items: center
+    }
+
+    .feature-card.highlight .feature-content {
+      flex: 1
+    }
+
+    .feature-card.highlight .feature-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.5rem;
+      flex: 1
+    }
+
+    .stat-item {
+      text-align: center
+    }
+
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem;
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1
+    }
+
+    .stat-label {
+      font-size: .75rem;
+      color: rgba(255, 255, 255, .5);
+      margin-top: .3rem;
+      letter-spacing: .04em;
+      text-transform: uppercase
+    }
+
+    /* TESTIMONIALS */
+    .testimonials {
+      background: var(--pink)
+    }
+
+    .testi-grid {
+      margin-top: 3rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem
+    }
+
+    .testi-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      border: 1px solid var(--border)
+    }
+
+    .testi-stars {
+      color: var(--pink-deep);
+      font-size: .85rem;
+      margin-bottom: 1rem;
+      letter-spacing: 2px
+    }
+
+    .testi-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      line-height: 1.6;
+      color: var(--text);
+      font-style: italic
+    }
+
+    .testi-author {
+      margin-top: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: .75rem
+    }
+
+    .testi-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .75rem;
+      font-weight: 500;
+      color: var(--white)
+    }
+
+    .testi-name {
+      font-size: .875rem;
+      font-weight: 500
+    }
+
+    .testi-event {
+      font-size: .75rem;
+      color: var(--text-muted)
+    }
+
+    /* CTA BANNER */
+    .cta-banner {
+      background: var(--text);
+      padding: 5rem 5vw;
+      text-align: center
+    }
+
+    .cta-banner h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1.2
+    }
+
+    .cta-banner h2 em {
+      font-style: italic;
+      color: var(--pink-mid)
+    }
+
+    .cta-banner p {
+      margin-top: 1rem;
+      color: rgba(255, 255, 255, .5);
+      font-size: 1rem;
+      font-weight: 300;
+      max-width: 480px;
+      margin-inline: auto
+    }
+
+    .cta-banner .cta-actions {
+      margin-top: 2rem;
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap
+    }
+
+    .btn-white {
+      background: var(--white);
+      color: var(--text);
+      padding: .85rem 2rem;
+      border-radius: 100px;
+      font-size: .9rem;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      transition: all .2s
+    }
+
+    .btn-white:hover {
+      background: var(--pink);
+      transform: translateY(-1px)
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: rgba(255, 255, 255, .7);
+      padding: .85rem 2rem;
+      border-radius: 100px;
+      font-size: .9rem;
+      font-weight: 400;
+      border: 1.5px solid rgba(255, 255, 255, .2);
+      cursor: pointer;
+      transition: all .2s
+    }
+
+    .btn-ghost:hover {
+      border-color: rgba(255, 255, 255, .4);
+      color: var(--white)
+    }
+
+    /* ───────── DESIGN TOOL PAGE ───────── */
+    #design-tool {
+      background: var(--cream)
+    }
+
+    .tool-header {
+      padding: 4rem 5vw 2rem;
+      text-align: center
+    }
+
+    .tool-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      padding: 0 5vw 5rem;
+      align-items: start
+    }
+
+    .tool-form {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      padding: 2rem
+    }
+
+    .form-section {
+      margin-bottom: 1.75rem
+    }
+
+    .form-label {
+      font-size: .8rem;
+      font-weight: 500;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: .6rem;
+      display: block
+    }
+
+    .upload-zone {
+      border: 2px dashed var(--beige-mid);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all .3s;
+      background: var(--beige)
+    }
+
+    .upload-zone:hover {
+      border-color: var(--pink-deep);
+      background: var(--pink)
+    }
+
+    .upload-icon {
+      font-size: 2rem;
+      margin-bottom: .75rem
+    }
+
+    .upload-text {
+      font-size: .875rem;
+      color: var(--text-muted);
+      font-weight: 300
+    }
+
+    .upload-text strong {
+      color: var(--text);
+      font-weight: 500;
+      display: block;
+      margin-bottom: .25rem
+    }
+
+    .form-input {
+      width: 100%;
+      padding: .75rem 1rem;
+      border: 1.5px solid var(--beige-mid);
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .9rem;
+      color: var(--text);
+      background: var(--cream);
+      transition: border-color .2s;
+      outline: none;
+      resize: vertical
+    }
+
+    .form-input:focus {
+      border-color: var(--pink-deep)
+    }
+
+    .form-textarea {
+      min-height: 100px
+    }
+
+    .color-swatches {
+      display: flex;
+      gap: .6rem;
+      flex-wrap: wrap;
+      margin-top: .5rem
+    }
+
+    .swatch {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2.5px solid transparent;
+      transition: all .2s;
+      position: relative
+    }
+
+    .swatch.selected::after {
+      content: '✓';
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .65rem;
+      color: var(--white);
+      font-weight: 600
+    }
+
+    .swatch:hover {
+      transform: scale(1.15)
+    }
+
+    .style-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: .6rem
+    }
+
+    .style-btn {
+      padding: .6rem;
+      border: 1.5px solid var(--beige-mid);
+      border-radius: 8px;
+      font-size: .8rem;
+      font-weight: 400;
+      text-align: center;
+      cursor: pointer;
+      background: var(--cream);
+      color: var(--text);
+      transition: all .2s
+    }
+
+    .style-btn.active,
+    .style-btn:hover {
+      background: var(--text);
+      color: var(--white);
+      border-color: var(--text)
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: var(--text);
+      color: var(--white);
+      padding: 1rem;
+      border: none;
+      border-radius: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .2s;
+      margin-top: .5rem
+    }
+
+    .submit-btn:hover {
+      background: var(--pink-dark)
+    }
+
+    .tool-preview {
+      position: sticky;
+      top: 90px
+    }
+
+    .preview-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      overflow: hidden
+    }
+
+    .preview-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between
+    }
+
+    .preview-title-sm {
+      font-size: .85rem;
+      font-weight: 500
+    }
+
+    .preview-status {
+      font-size: .72rem;
+      color: var(--pink-dark);
+      background: var(--pink);
+      padding: .25rem .6rem;
+      border-radius: 100px;
+      border: 1px solid var(--pink-mid)
+    }
+
+    .preview-canvas {
+      height: 360px;
+      background: linear-gradient(145deg, var(--pink) 0%, var(--beige-mid) 40%, var(--pink-mid) 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      padding: 2rem
+    }
+
+    .preview-placeholder-icon {
+      font-size: 3rem;
+      opacity: .35
+    }
+
+    .preview-placeholder-text {
+      font-size: .875rem;
+      color: var(--text-muted);
+      text-align: center;
+      line-height: 1.6;
+      font-weight: 300
+    }
+
+    .preview-mockup {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      width: 100%
+    }
+
+    .pm-card {
+      background: rgba(255, 255, 255, .7);
+      border-radius: 12px;
+      padding: 1.25rem;
+      border: 1px solid rgba(255, 255, 255, .8)
+    }
+
+    .pm-label {
+      font-size: .68rem;
+      font-weight: 500;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      color: var(--pink-dark);
+      margin-bottom: .4rem
+    }
+
+    .pm-value {
+      font-size: .85rem;
+      font-weight: 500;
+      color: var(--text)
+    }
+
+    /* ───────── VENDORS MARKETPLACE ───────── */
+    #vendors {
+      background: var(--cream)
+    }
+
+    .vendors-header {
+      padding: 4rem 5vw 2rem
+    }
+
+    .vendors-filters {
+      display: flex;
+      gap: .75rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+      padding: 0 5vw 2rem
+    }
+
+    .filter-btn {
+      padding: .5rem 1.2rem;
+      border: 1.5px solid var(--beige-mid);
+      border-radius: 100px;
+      font-size: .8rem;
+      font-weight: 400;
+      cursor: pointer;
+      background: var(--white);
+      color: var(--text-muted);
+      transition: all .2s
+    }
+
+    .filter-btn.active,
+    .filter-btn:hover {
+      background: var(--text);
+      color: var(--white);
+      border-color: var(--text)
+    }
+
+    .vendors-grid {
+      padding: 0 5vw 5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem
+    }
+
+    .vendor-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: all .3s;
+      cursor: pointer
+    }
+
+    .vendor-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(100, 60, 50, .1);
+      border-color: var(--pink-mid)
+    }
+
+    .vendor-cover {
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      position: relative
+    }
+
+    .vc1 {
+      background: linear-gradient(135deg, #f9e8ec, #f0c4d0)
+    }
+
+    .vc2 {
+      background: linear-gradient(135deg, #f7f2ec, #e8ddd1)
+    }
+
+    .vc3 {
+      background: linear-gradient(135deg, #e8f0f9, #c4d4e8)
+    }
+
+    .vc4 {
+      background: linear-gradient(135deg, #f0ece8, #ddd4c8)
+    }
+
+    .vc5 {
+      background: linear-gradient(135deg, #ecf9f0, #c4e8d4)
+    }
+
+    .vc6 {
+      background: linear-gradient(135deg, #f9ecf9, #e4c4e8)
+    }
+
+    .vendor-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: var(--white);
+      border-radius: 100px;
+      font-size: .68rem;
+      font-weight: 500;
+      padding: .3rem .7rem;
+      color: var(--text);
+      border: 1px solid var(--border)
+    }
+
+    .vendor-body {
+      padding: 1.25rem
+    }
+
+    .vendor-cat {
+      font-size: .7rem;
+      font-weight: 500;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--pink-dark);
+      margin-bottom: .35rem
+    }
+
+    .vendor-name {
+      font-size: 1.05rem;
+      font-weight: 500;
+      margin-bottom: .35rem
+    }
+
+    .vendor-desc {
+      font-size: .825rem;
+      color: var(--text-muted);
+      font-weight: 300;
+      line-height: 1.55;
+      margin-bottom: 1rem
+    }
+
+    .vendor-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between
+    }
+
+    .vendor-rating {
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+      font-size: .8rem;
+      color: var(--text-muted)
+    }
+
+    .vendor-stars {
+      color: var(--pink-deep);
+      letter-spacing: 1px
+    }
+
+    .vendor-price {
+      font-size: .8rem;
+      font-weight: 500;
+      color: var(--text)
+    }
+
+    /* JOIN VENDOR */
+    .join-vendor-section {
+      background: var(--beige);
+      padding: 4rem 5vw;
+      margin: 0 5vw 3rem;
+      border-radius: var(--radius-lg)
+    }
+
+    .join-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center
+    }
+
+    .join-perks {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: .75rem
+    }
+
+    .perk {
+      display: flex;
+      align-items: flex-start;
+      gap: .75rem
+    }
+
+    .perk-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--pink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .9rem;
+      flex-shrink: 0
+    }
+
+    .perk-text {
+      font-size: .875rem;
+      color: var(--text-muted);
+      font-weight: 300;
+      line-height: 1.55
+    }
+
+    .perk-text strong {
+      color: var(--text);
+      font-weight: 500;
+      display: block
+    }
+
+    .join-form {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      padding: 2rem
+    }
+
+    .join-form h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 1.5rem
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem
+    }
+
+    .form-field {
+      margin-bottom: 1rem
+    }
+
+    .form-field:last-child {
+      margin-bottom: 0
+    }
+
+    /* ───────── ABOUT ───────── */
+    #about {
+      background: var(--cream)
+    }
+
+    .about-hero {
+      padding: 5rem 5vw;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center
+    }
+
+    .about-visual {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      overflow: hidden
+    }
+
+    .about-img {
+      height: 400px;
+      background: linear-gradient(145deg, var(--pink) 0%, var(--beige-mid) 50%, var(--pink-mid) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+      opacity: .4
+    }
+
+    .about-caption {
+      padding: 1.5rem;
+      border-top: 1px solid var(--border)
+    }
+
+    .about-caption-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 400
+    }
+
+    .about-caption-sub {
+      font-size: .8rem;
+      color: var(--text-muted);
+      margin-top: .25rem
+    }
+
+    .about-content .section-tag {
+      margin-bottom: 1rem
+    }
+
+    .about-content h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      font-weight: 300;
+      line-height: 1.2;
+      letter-spacing: -.01em
+    }
+
+    .about-content h1 em {
+      font-style: italic;
+      color: var(--pink-dark)
+    }
+
+    .about-content p {
+      margin-top: 1rem;
+      font-size: .95rem;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.75
+    }
+
+    .values-section {
+      padding: 0 5vw 5rem
+    }
+
+    .values-grid {
+      margin-top: 3rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem
+    }
+
+    .value-card {
+      padding: 2rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--white)
+    }
+
+    .value-icon {
+      font-size: 1.75rem;
+      margin-bottom: 1rem
+    }
+
+    .value-title {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: .5rem
+    }
+
+    .value-text {
+      font-size: .85rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      font-weight: 300
+    }
+
+    .team-section {
+      background: var(--pink);
+      padding: 5rem 5vw
+    }
+
+    .team-grid {
+      margin-top: 3rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem
+    }
+
+    .team-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      text-align: center
+    }
+
+    .team-photo {
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem
+    }
+
+    .tp1 {
+      background: linear-gradient(135deg, #f9e8ec, #f0c4d0)
+    }
+
+    .tp2 {
+      background: linear-gradient(135deg, #f7f2ec, #e8ddd1)
+    }
+
+    .tp3 {
+      background: linear-gradient(135deg, #e8f0f9, #c4d4e8)
+    }
+
+    .tp4 {
+      background: linear-gradient(135deg, #ecf9f0, #c4e8d4)
+    }
+
+    .team-info {
+      padding: 1rem
+    }
+
+    .team-name {
+      font-size: .9rem;
+      font-weight: 500
+    }
+
+    .team-role {
+      font-size: .75rem;
+      color: var(--text-muted);
+      margin-top: .2rem
+    }
+
+    /* ───────── VENDOR PROFILE ───────── */
+    #vendor-profile {
+      background: var(--cream)
+    }
+
+    .profile-header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 3rem 5vw
+    }
+
+    .profile-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 2rem
+    }
+
+    .profile-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      flex-shrink: 0
+    }
+
+    .profile-meta h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 400
+    }
+
+    .profile-meta .vendor-cat {
+      font-size: .75rem;
+      font-weight: 500;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--pink-dark);
+      margin-bottom: .4rem
+    }
+
+    .profile-meta p {
+      font-size: .9rem;
+      color: var(--text-muted);
+      font-weight: 300;
+      max-width: 560px;
+      margin-top: .5rem;
+      line-height: 1.65
+    }
+
+    .profile-stats {
+      display: flex;
+      gap: 2rem;
+      margin-top: 1.5rem
+    }
+
+    .pstat {
+      text-align: center
+    }
+
+    .pstat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 300
+    }
+
+    .pstat-label {
+      font-size: .72rem;
+      color: var(--text-muted);
+      letter-spacing: .04em;
+      text-transform: uppercase
+    }
+
+    .profile-actions {
+      margin-top: 1.5rem;
+      display: flex;
+      gap: 1rem
+    }
+
+    .profile-body {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2rem;
+      padding: 3rem 5vw
+    }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem
+    }
+
+    .portfolio-item {
+      border-radius: 12px;
+      overflow: hidden;
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      cursor: pointer;
+      transition: transform .3s
+    }
+
+    .portfolio-item:hover {
+      transform: scale(1.03)
+    }
+
+    .pi1 {
+      background: linear-gradient(135deg, #f9e8ec, #f0c4d0)
+    }
+
+    .pi2 {
+      background: linear-gradient(135deg, #f7f2ec, #e8ddd1)
+    }
+
+    .pi3 {
+      background: linear-gradient(135deg, #e8f0f9, #c4d4e8)
+    }
+
+    .pi4 {
+      background: linear-gradient(135deg, #f0ece8, #ddd4c8)
+    }
+
+    .pi5 {
+      background: linear-gradient(135deg, #ecf9f0, #c4e8d4)
+    }
+
+    .pi6 {
+      background: linear-gradient(135deg, #f9ecf9, #e4c4e8)
+    }
+
+    .sidebar-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem
+    }
+
+    .sidebar-card h3 {
+      font-size: .95rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      padding-bottom: .75rem;
+      border-bottom: 1px solid var(--border)
+    }
+
+    .package-item {
+      padding: .75rem 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center
+    }
+
+    .package-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0
+    }
+
+    .package-name {
+      font-size: .875rem;
+      font-weight: 500
+    }
+
+    .package-desc {
+      font-size: .75rem;
+      color: var(--text-muted);
+      margin-top: .15rem
+    }
+
+    .package-price {
+      font-size: .9rem;
+      font-weight: 500;
+      color: var(--pink-dark)
+    }
+
+    .inquiry-btn {
+      width: 100%;
+      background: var(--text);
+      color: var(--white);
+      padding: .9rem;
+      border: none;
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background .2s
+    }
+
+    .inquiry-btn:hover {
+      background: var(--pink-dark)
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--text);
+      padding: 4rem 5vw 2rem;
+      color: rgba(255, 255, 255, .6)
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem
+    }
+
+    .footer-brand .logo {
+      color: var(--white);
+      display: block;
+      margin-bottom: .75rem
+    }
+
+    .footer-brand p {
+      font-size: .85rem;
+      line-height: 1.65;
+      color: rgba(255, 255, 255, .4);
+      max-width: 260px;
+      font-weight: 300
+    }
+
+    .footer-col h4 {
+      font-size: .75rem;
+      font-weight: 500;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .4);
+      margin-bottom: 1rem
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: .6rem
+    }
+
+    .footer-col ul a {
+      font-size: .875rem;
+      color: rgba(255, 255, 255, .55);
+      text-decoration: none;
+      transition: color .2s;
+      font-weight: 300
+    }
+
+    .footer-col ul a:hover {
+      color: var(--white)
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, .08);
+      padding-top: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: .8rem;
+      color: rgba(255, 255, 255, .3)
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 3rem 5vw
+      }
+
+      .hero-visual {
+        display: none
+      }
+
+      .steps-grid {
+        grid-template-columns: 1fr
+      }
+
+      .step-connector {
+        display: none
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr
+      }
+
+      .feature-card.highlight {
+        grid-column: span 1
+      }
+
+      .feature-card.highlight .feature-inner {
+        flex-direction: column;
+        gap: 1.5rem
+      }
+
+      .testi-grid {
+        grid-template-columns: 1fr
+      }
+
+      .tool-layout {
+        grid-template-columns: 1fr
+      }
+
+      .tool-preview {
+        display: none
+      }
+
+      .join-inner {
+        grid-template-columns: 1fr
+      }
+
+      .about-hero {
+        grid-template-columns: 1fr
+      }
+
+      .about-visual {
+        display: none
+      }
+
+      .values-grid {
+        grid-template-columns: 1fr 1fr
+      }
+
+      .team-grid {
+        grid-template-columns: 1fr 1fr
+      }
+
+      .profile-body {
+        grid-template-columns: 1fr
+      }
+
+      .portfolio-grid {
+        grid-template-columns: repeat(2, 1fr)
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr
+      }
+
+      .nav-links {
+        display: none
+      }
+
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 68px;
+        left: 0;
+        right: 0;
+        background: rgba(253, 250, 247, .98);
+        border-bottom: 1px solid var(--border);
+        padding: 1.5rem 5vw;
+        gap: 1.25rem
+      }
+
+      .nav-hamburger {
+        display: flex
+      }
+
+      .form-row {
+        grid-template-columns: 1fr
+      }
+    }
+
+    @media(max-width:600px) {
+      .values-grid {
+        grid-template-columns: 1fr
+      }
+
+      .team-grid {
+        grid-template-columns: 1fr 1fr
+      }
+
+      .profile-stats {
+        gap: 1rem
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr
+      }
+
+      .footer-brand {
+        margin-bottom: 1rem
+      }
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    .fade-up {
+      animation: fadeUp .6s ease forwards
+    }
+
+    .fade-up-delay {
+      animation: fadeUp .6s ease .15s forwards;
+      opacity: 0
+    }
+
+    .fade-up-delay2 {
+      animation: fadeUp .6s ease .3s forwards;
+      opacity: 0
+    }
+
+    /* Notification toast */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--text);
+      color: var(--white);
+      padding: .85rem 1.5rem;
+      border-radius: 12px;
+      font-size: .875rem;
+      z-index: 999;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all .3s;
+      pointer-events: none
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0)
+    }
+
+    /* WhatsApp FAB */
+    .wa-fab {
+      position: fixed;
+      bottom: 2rem;
+      left: 2rem;
+      z-index: 998;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: .5rem
+    }
+
+    .wa-btn {
+      display: flex;
+      align-items: center;
+      gap: .65rem;
+      background: #25D366;
+      color: #fff;
+      border: none;
+      border-radius: 100px;
+      padding: .75rem 1.2rem .75rem 1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .875rem;
+      font-weight: 500;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(37, 211, 102, .35);
+      transition: all .25s
+    }
+
+    .wa-btn:hover {
+      background: #1ebe5d;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(37, 211, 102, .4)
+    }
+
+    .wa-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: #fff;
+      flex-shrink: 0
+    }
+
+    .wa-label {
+      font-size: .72rem;
+      font-weight: 500;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      color: #25D366;
+      margin-left: .5rem;
+      opacity: .8
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="toast" id="toast"></div>
+  <div class="toast" id="toast"></div>
 
-<!-- WhatsApp FAB -->
-<div class="wa-fab">
-  <button class="wa-btn" onclick="openWhatsApp('general','')">
-    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-    Chat with us on WhatsApp
-  </button>
-</div>
-
-<!-- NAV -->
-<nav>
-  <div class="logo">Event<span>Vision</span></div>
-  <ul class="nav-links" id="navLinks">
-    <li><a href="#" onclick="showPage('home')">Home</a></li>
-    <li><a href="#" onclick="showPage('design-tool')">Design Tool</a></li>
-    <li><a href="#" onclick="showPage('vendors')">Vendors</a></li>
-    <li><a href="#" onclick="showPage('about')">About</a></li>
-    <li><a href="#" onclick="showPage('design-tool')" class="nav-cta">Start Planning</a></li>
-  </ul>
-  <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
-    <span></span><span></span><span></span>
-  </div>
-</nav>
-
-<!-- ═══════════ HOME ═══════════ -->
-<div class="page active" id="home">
-
-  <!-- HERO -->
-  <section class="hero">
-    <div>
-      <h1 class="fade-up-delay">Your <em>dream event</em>, designed in minutes.</h1>
-      <p class="hero-sub fade-up-delay2">Upload your venue, describe your vision — and let our AI generate a stunning event design with perfectly matched vendors, all in one place.</p>
-      <div class="hero-actions fade-up-delay2">
-        <button class="btn-primary" onclick="showPage('design-tool')">Start Designing Free →</button>
-        <button class="btn-outline" onclick="showPage('vendors')">Explore Vendors</button>
-      </div>
-      <div class="hero-trust fade-up-delay2">
-        <div class="trust-avatars">
-          <span class="ta1">SR</span>
-          <span class="ta2">LM</span>
-          <span class="ta3">AK</span>
-          <span class="ta4">NJ</span>
-        </div>
-        <p class="trust-text"><strong>2,400+</strong> events planned this month</p>
-      </div>
-    </div>
-    <div class="hero-visual">
-      <div class="hero-card-main fade-up">
-        <div class="hero-img-placeholder">
-          <span class="hero-img-icon">🌸</span>
-        </div>
-        <div class="hero-card-info">
-          <div>
-            <div class="event-tag">Wedding</div>
-            <div class="event-name">Sofia & James</div>
-            <div class="event-date">June 14, 2025 · Garden Venue</div>
-          </div>
-          <div style="text-align:right">
-            <div style="font-size:.72rem;color:var(--text-light);margin-bottom:.2rem">Theme</div>
-            <div style="font-size:.875rem;font-weight:500">Soft Romance</div>
-          </div>
-        </div>
-      </div>
-      <div class="floating-cards">
-        <div class="fcard">
-          <div class="fcard-icon">🎨</div>
-          <div class="fcard-label">Color Palette</div>
-          <div style="display:flex;gap:6px;margin-top:.3rem">
-            <span style="width:18px;height:18px;background:#f9e8ec;border-radius:50%;border:1px solid var(--border)"></span>
-            <span style="width:18px;height:18px;background:#f0c4d0;border-radius:50%;border:1px solid var(--border)"></span>
-            <span style="width:18px;height:18px;background:#e8ddd1;border-radius:50%;border:1px solid var(--border)"></span>
-          </div>
-        </div>
-        <div class="fcard">
-          <div class="fcard-icon">👥</div>
-          <div class="fcard-label">Vendors Matched</div>
-          <div class="fcard-value">6 specialists</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- HOW IT WORKS -->
-  <section class="how-it-works">
-    <div class="section-tag">How it works</div>
-    <h2 class="section-title">Three steps to your <em>perfect event</em></h2>
-    <p class="section-sub">Our streamlined process takes you from a blank canvas to a fully designed event with vendor recommendations in minutes.</p>
-    <div class="steps-grid">
-      <div class="step-card">
-        <div class="step-connector"></div>
-        <div class="step-num">01</div>
-        <div class="step-icon">📸</div>
-        <div class="step-title">Upload Your Venue</div>
-        <p class="step-text">Share a photo of your venue space and let our AI understand the layout, lighting, and architectural details to work with.</p>
-      </div>
-      <div class="step-card">
-        <div class="step-connector"></div>
-        <div class="step-num">02</div>
-        <div class="step-icon">✨</div>
-        <div class="step-title">Describe Your Vision</div>
-        <p class="step-text">Tell us your dream aesthetic — theme, colors, style, mood. The more detail, the more personalized your AI-generated design mockup.</p>
-      </div>
-      <div class="step-card">
-        <div class="step-num">03</div>
-        <div class="step-icon">🎯</div>
-        <div class="step-title">Get Your Design & Vendors</div>
-        <p class="step-text">Receive a realistic design mockup of your event along with a curated list of trusted vendors perfectly matched to your style and budget.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- EVENT TYPES -->
-  <section class="event-types">
-    <div class="section-tag">Occasions</div>
-    <h2 class="section-title">Every <em>celebration</em> deserves to be special</h2>
-    <p class="section-sub">From intimate proposals to grand weddings — we design experiences for every milestone that matters.</p>
-    <div class="types-grid" style="margin-top:2.5rem">
-      <div class="type-pill active" onclick="selectType(this)">
-        <div class="type-icon">💍</div>
-        <div class="type-name">Wedding</div>
-        <div class="type-count">340 vendors</div>
-      </div>
-      <div class="type-pill" onclick="selectType(this)">
-        <div class="type-icon">🎂</div>
-        <div class="type-name">Birthday</div>
-        <div class="type-count">280 vendors</div>
-      </div>
-      <div class="type-pill" onclick="selectType(this)">
-        <div class="type-icon">💎</div>
-        <div class="type-name">Engagement</div>
-        <div class="type-count">190 vendors</div>
-      </div>
-      <div class="type-pill" onclick="selectType(this)">
-        <div class="type-icon">🌹</div>
-        <div class="type-name">Proposal</div>
-        <div class="type-count">120 vendors</div>
-      </div>
-      <div class="type-pill" onclick="selectType(this)">
-        <div class="type-icon">🎓</div>
-        <div class="type-name">Graduation</div>
-        <div class="type-count">160 vendors</div>
-      </div>
-      <div class="type-pill" onclick="selectType(this)">
-        <div class="type-icon">🍾</div>
-        <div class="type-name">Corporate</div>
-        <div class="type-count">210 vendors</div>
-      </div>
-      <div class="type-pill" onclick="selectType(this)">
-        <div class="type-icon">🌸</div>
-        <div class="type-name">Baby Shower</div>
-        <div class="type-count">95 vendors</div>
-      </div>
-      <div class="type-pill" onclick="selectType(this)">
-        <div class="type-icon">✨</div>
-        <div class="type-name">Other</div>
-        <div class="type-count">Any occasion</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FEATURES -->
-  <section class="features-section">
-    <div class="section-tag">Platform Features</div>
-    <h2 class="section-title">Everything you need, <em>all in one place</em></h2>
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon">🎯</div>
-        <div class="feature-title">Smart Vendor Matching</div>
-        <p class="feature-desc">Our system automatically recommends the most suitable vendors based on your event type, aesthetic, and requirements — no searching needed.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🆓</div>
-        <div class="feature-title">Completely Free</div>
-        <p class="feature-desc">Both users and vendors use EventVision at zero cost. No hidden fees, no subscriptions — just beautiful events made accessible to everyone.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🌿</div>
-        <div class="feature-title">Outdoor Specialists</div>
-        <p class="feature-desc">Planning an outdoor event? We connect you with specialists experienced in garden parties, beach ceremonies, and open-air celebrations.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">📋</div>
-        <div class="feature-title">Full Event Package</div>
-        <p class="feature-desc">Beyond design, get detailed setup ideas, materials checklists, and a full plan covering every element your event will need.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- TESTIMONIALS -->
-  <section class="testimonials">
-    <div class="section-tag">Stories</div>
-    <h2 class="section-title">Moments turned into <em>memories</em></h2>
-    <div class="testi-grid">
-      <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-quote">"I uploaded our garden venue and within two minutes had a design mockup that made me cry. It was exactly what I'd been imagining for years."</p>
-        <div class="testi-author">
-          <div class="testi-avatar" style="background:linear-gradient(135deg,#d48a9e,#a85870)">SR</div>
-          <div>
-            <div class="testi-name">Sara Rahman</div>
-            <div class="testi-event">Wedding · Cairo</div>
-          </div>
-        </div>
-      </div>
-      <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-quote">"As a florist on the platform, I've received more inquiries in one month than I had all last year. The visibility is incredible and signing up was completely free."</p>
-        <div class="testi-author">
-          <div class="testi-avatar" style="background:linear-gradient(135deg,#c9b89e,#a89070)">LM</div>
-          <div>
-            <div class="testi-name">Laila Mostafa</div>
-            <div class="testi-event">Florist & Vendor</div>
-          </div>
-        </div>
-      </div>
-      <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-quote">"We planned my daughter's 18th birthday in an afternoon. The baby pink and beige theme came out so beautifully — guests thought we'd hired a professional planner!"</p>
-        <div class="testi-author">
-          <div class="testi-avatar" style="background:linear-gradient(135deg,#b0c4de,#7898b8)">NA</div>
-          <div>
-            <div class="testi-name">Nadia Al-Farsi</div>
-            <div class="testi-event">Birthday · Dubai</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <div class="cta-banner">
-    <h2>Your event deserves to be <em>unforgettable</em></h2>
-    <p>Start designing for free today — no signup required for your first design.</p>
-    <div class="cta-actions">
-      <button class="btn-white" onclick="showPage('design-tool')">Start Designing Free</button>
-      <button class="btn-ghost" onclick="showPage('vendors')">Browse Vendors</button>
-    </div>
+  <!-- WhatsApp FAB -->
+  <div class="wa-fab">
+    <button class="wa-btn" onclick="openWhatsApp('general','')">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+      </svg>
+      Chat with us on WhatsApp
+    </button>
   </div>
 
-  <footer>
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <span class="logo">Event<span>Vision</span></span>
-        <p>AI-powered event design and vendor matching — making every celebration effortlessly beautiful.</p>
-      </div>
-      <div class="footer-col">
-        <h4>Platform</h4>
-        <ul>
-          <li><a href="#" onclick="showPage('design-tool')">Design Tool</a></li>
-          <li><a href="#" onclick="showPage('vendors')">Vendors</a></li>
-          <li><a href="#" onclick="showPage('vendors')">Join as Vendor</a></li>
-          <li><a href="#" onclick="showPage('about')">About Us</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Occasions</h4>
-        <ul>
-          <li><a href="#">Weddings</a></li>
-          <li><a href="#">Birthdays</a></li>
-          <li><a href="#">Engagements</a></li>
-          <li><a href="#">Proposals</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Support</h4>
-        <ul>
-          <li><a href="#">Help Center</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Terms of Service</a></li>
-          <li><a href="#">Contact Us</a></li>
-        </ul>
-      </div>
+  <!-- NAV -->
+  <nav>
+    <div class="logo">Event<span>Vision</span></div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#" onclick="showPage('home')">Home</a></li>
+      <li><a href="#" onclick="showPage('design-tool')">Design Tool</a></li>
+      <li><a href="#" onclick="showPage('vendors')">Vendors</a></li>
+      <li><a href="#" onclick="showPage('about')">About</a></li>
+      <li><a href="#" onclick="showPage('design-tool')" class="nav-cta">Start Planning</a></li>
+    </ul>
+    <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
     </div>
-    <div class="footer-bottom">
-      <span>© 2025 EventVision. All rights reserved.</span>
-      <span>Made with ♡ for every celebration</span>
-    </div>
-  </footer>
-</div>
+  </nav>
 
-<!-- ═══════════ DESIGN TOOL ═══════════ -->
-<div class="page" id="design-tool">
-  <div class="tool-header">
-    <div class="section-tag">Design Tool</div>
-    <h1 class="section-title">Design your <em>event</em></h1>
-    <p class="section-sub" style="margin-inline:auto;text-align:center">Upload your venue, describe your vision, and watch the magic happen.</p>
-  </div>
+  <!-- ═══════════ HOME ═══════════ -->
+  <div class="page active" id="home">
 
-  <div class="tool-layout">
-    <div class="tool-form">
-      <div class="form-section">
-        <label class="form-label">Venue Photo</label>
-        <div class="upload-zone" onclick="showToast('Photo upload ready in full version')">
-          <div class="upload-icon">📷</div>
-          <div class="upload-text">
-            <strong>Click to upload or drag & drop</strong>
-            JPG, PNG up to 10MB
-          </div>
-        </div>
-      </div>
-
-      <div class="form-section">
-        <label class="form-label">Event Type</label>
-        <select class="form-input" style="cursor:pointer">
-          <option>💍 Wedding</option>
-          <option>🎂 Birthday</option>
-          <option>💎 Engagement</option>
-          <option>🌹 Proposal</option>
-          <option>🎓 Graduation</option>
-          <option>🍾 Corporate Event</option>
-          <option>🌸 Baby Shower</option>
-          <option>✨ Other</option>
-        </select>
-      </div>
-
-      <div class="form-section">
-        <label class="form-label">Describe Your Vision</label>
-        <textarea class="form-input form-textarea" placeholder="e.g. I want a soft romantic outdoor wedding with hanging lights, floral arches, and a candlelit dinner setting. The mood should feel dreamy and intimate..."></textarea>
-      </div>
-
-      <div class="form-section">
-        <label class="form-label">Preferred Color Palette</label>
-        <div class="color-swatches">
-          <div class="swatch selected" style="background:#f9e8ec;border-color:var(--pink-dark)" title="Baby Pink" onclick="selectSwatch(this)"></div>
-          <div class="swatch" style="background:#f7f2ec" title="Beige" onclick="selectSwatch(this)"></div>
-          <div class="swatch" style="background:#e8ddd1" title="Warm Nude" onclick="selectSwatch(this)"></div>
-          <div class="swatch" style="background:#e8e4f8" title="Lavender" onclick="selectSwatch(this)"></div>
-          <div class="swatch" style="background:#d4e8d8" title="Sage Green" onclick="selectSwatch(this)"></div>
-          <div class="swatch" style="background:#f8f0e0" title="Champagne" onclick="selectSwatch(this)"></div>
-          <div class="swatch" style="background:#2a1f1a" title="Deep Mocha" onclick="selectSwatch(this)"></div>
-          <div class="swatch" style="background:#b8c8d8" title="Dusty Blue" onclick="selectSwatch(this)"></div>
-        </div>
-      </div>
-
-      <div class="form-section">
-        <label class="form-label">Aesthetic Style</label>
-        <div class="style-grid">
-          <div class="style-btn active" onclick="selectStyle(this)">Elegant</div>
-          <div class="style-btn" onclick="selectStyle(this)">Minimal</div>
-          <div class="style-btn" onclick="selectStyle(this)">Modern</div>
-          <div class="style-btn" onclick="selectStyle(this)">Romantic</div>
-          <div class="style-btn" onclick="selectStyle(this)">Rustic</div>
-          <div class="style-btn" onclick="selectStyle(this)">Bohemian</div>
-        </div>
-      </div>
-
-      <div class="form-section">
-        <label class="form-label">Guest Count</label>
-        <input type="number" class="form-input" placeholder="e.g. 80" min="1"/>
-      </div>
-
-      <div class="form-section">
-        <label class="form-label">Budget Range</label>
-        <select class="form-input" style="cursor:pointer">
-          <option>Under EGP 5,000</option>
-          <option>EGP 5,000 – EGP 15,000</option>
-          <option>EGP 15,000 – EGP 30,000</option>
-          <option>EGP 30,000 – EGP 60,000</option>
-          <option>EGP 60,000+</option>
-        </select>
-      </div>
-
-      <button class="submit-btn" onclick="generateDesign()">✨ Generate My Event Design</button>
-    </div>
-
-    <div class="tool-preview">
-      <div class="preview-card">
-        <div class="preview-header">
-          <span class="preview-title-sm">Design Preview</span>
-          <span class="preview-status" id="previewStatus">Waiting for input</span>
-        </div>
-        <div class="preview-canvas" id="previewCanvas">
-          <div class="preview-placeholder-icon">🎨</div>
-          <p class="preview-placeholder-text">Fill in your details and click<br/><strong style="color:var(--text)">Generate My Event Design</strong><br/>to see your personalized mockup</p>
-        </div>
-      </div>
-
-      <div style="margin-top:1.5rem">
-        <div class="preview-title-sm" style="margin-bottom:1rem">Why our users love it</div>
-        <div style="display:flex;flex-direction:column;gap:.75rem">
-          <div class="perk">
-            <div class="perk-icon">⚡</div>
-            <div class="perk-text"><strong>Results in under 2 minutes</strong>Full design mockup generated instantly</div>
-          </div>
-          <div class="perk">
-            <div class="perk-icon">🎯</div>
-            <div class="perk-text"><strong>Vendor matches included</strong>Curated professionals for your event</div>
-          </div>
-          <div class="perk">
-            <div class="perk-icon">🆓</div>
-            <div class="perk-text"><strong>Completely free to use</strong>No credit card, no hidden fees</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <footer style="margin-top:0">
-    <div class="footer-bottom" style="border-top:1px solid rgba(255,255,255,.08);padding-top:1.5rem">
-      <span>© 2025 EventVision.</span>
-      <button class="btn-ghost" style="font-size:.8rem;padding:.4rem 1rem" onclick="showPage('home')">← Back to Home</button>
-    </div>
-  </footer>
-</div>
-
-<!-- ═══════════ VENDORS ═══════════ -->
-<div class="page" id="vendors">
-  <div class="vendors-header">
-    <div class="section-tag">Vendor Marketplace</div>
-    <h1 class="section-title">Find your <em>perfect team</em></h1>
-    <p class="section-sub">Browse trusted professionals curated for every style, budget, and occasion.</p>
-  </div>
-
-  <div class="vendors-filters">
-    <button class="filter-btn active" onclick="filterVendors(this,'all')">All Vendors</button>
-    <button class="filter-btn" onclick="filterVendors(this,'decorator')">Decorators</button>
-    <button class="filter-btn" onclick="filterVendors(this,'photographer')">Photographers</button>
-    <button class="filter-btn" onclick="filterVendors(this,'caterer')">Caterers</button>
-    <button class="filter-btn" onclick="filterVendors(this,'florist')">Florists</button>
-    <button class="filter-btn" onclick="filterVendors(this,'planner')">Planners</button>
-    <button class="filter-btn" onclick="filterVendors(this,'outdoor')">Outdoor Specialists</button>
-  </div>
-
-  <div class="vendors-grid">
-    <div class="vendor-card" data-cat="decorator" onclick="showVendorProfile('Bloom & Co. Decor')">
-      <div class="vendor-cover vc1"><div class="vendor-badge">⭐ Top Rated</div>🌸</div>
-      <div class="vendor-body">
-        <div class="vendor-cat">Decorator</div>
-        <div class="vendor-name">Bloom & Co. Decor</div>
-        <p class="vendor-desc">Specializing in soft, floral-forward event designs with a signature baby pink and beige palette. Known for ethereal balloon installations.</p>
-        <div class="vendor-footer" style="flex-direction:column;gap:.65rem">
-          <div class="vendor-rating"><span class="vendor-stars">★★★★★</span> 4.9 (127)</div>
-          <div class="vendor-price">From EGP 800</div>
-        </div>
-        <button onclick="event.stopPropagation();openWhatsApp('vendor',this.closest('.vendor-card').querySelector('.vendor-name').textContent)" style="display:flex;align-items:center;justify-content:center;gap:.45rem;width:100%;background:#f0faf4;color:#1a7a45;border:1px solid #b5e0c5;border-radius:8px;padding:.5rem;font-size:.78rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background .2s" onmouseover="this.style.background='#d8f5e5'" onmouseout="this.style.background='#f0faf4'"><svg style="width:14px;height:14px;fill:#25D366" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Quick WhatsApp Inquiry</button>
-      </div>
-    </div>
-
-    <div class="vendor-card" data-cat="photographer" onclick="showVendorProfile('Golden Hour Studio')">
-      <div class="vendor-cover vc2"><div class="vendor-badge">✦ Featured</div>📷</div>
-      <div class="vendor-body">
-        <div class="vendor-cat">Photographer</div>
-        <div class="vendor-name">Golden Hour Studio</div>
-        <p class="vendor-desc">Award-winning event photography with a timeless, editorial approach. We capture the emotion, not just the moments.</p>
-        <div class="vendor-footer" style="flex-direction:column;gap:.65rem">
-          <div class="vendor-rating"><span class="vendor-stars">★★★★★</span> 5.0 (89)</div>
-          <div class="vendor-price">From EGP 1,200</div>
-        </div>
-        <button onclick="event.stopPropagation();openWhatsApp('vendor',this.closest('.vendor-card').querySelector('.vendor-name').textContent)" style="display:flex;align-items:center;justify-content:center;gap:.45rem;width:100%;background:#f0faf4;color:#1a7a45;border:1px solid #b5e0c5;border-radius:8px;padding:.5rem;font-size:.78rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background .2s" onmouseover="this.style.background='#d8f5e5'" onmouseout="this.style.background='#f0faf4'"><svg style="width:14px;height:14px;fill:#25D366" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Quick WhatsApp Inquiry</button>
-      </div>
-    </div>
-
-    <div class="vendor-card" data-cat="florist" onclick="showVendorProfile('Petal & Grace')">
-      <div class="vendor-cover vc3">💐</div>
-      <div class="vendor-body">
-        <div class="vendor-cat">Florist</div>
-        <div class="vendor-name">Petal & Grace</div>
-        <p class="vendor-desc">Bespoke floral arrangements crafted with seasonal blooms. Specializing in ceremony arches, centerpieces, and bridal bouquets.</p>
-        <div class="vendor-footer" style="flex-direction:column;gap:.65rem">
-          <div class="vendor-rating"><span class="vendor-stars">★★★★☆</span> 4.8 (203)</div>
-          <div class="vendor-price">From EGP 350</div>
-        </div>
-        <button onclick="event.stopPropagation();openWhatsApp('vendor',this.closest('.vendor-card').querySelector('.vendor-name').textContent)" style="display:flex;align-items:center;justify-content:center;gap:.45rem;width:100%;background:#f0faf4;color:#1a7a45;border:1px solid #b5e0c5;border-radius:8px;padding:.5rem;font-size:.78rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background .2s" onmouseover="this.style.background='#d8f5e5'" onmouseout="this.style.background='#f0faf4'"><svg style="width:14px;height:14px;fill:#25D366" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Quick WhatsApp Inquiry</button>
-      </div>
-    </div>
-
-    <div class="vendor-card" data-cat="caterer" onclick="showVendorProfile('Saveur Catering')">
-      <div class="vendor-cover vc4">🍽️</div>
-      <div class="vendor-body">
-        <div class="vendor-cat">Caterer</div>
-        <div class="vendor-name">Saveur Catering</div>
-        <p class="vendor-desc">Elegant fine-dining and buffet catering services for weddings and corporate events. Customizable menus for any dietary requirement.</p>
-        <div class="vendor-footer" style="flex-direction:column;gap:.65rem">
-          <div class="vendor-rating"><span class="vendor-stars">★★★★★</span> 4.9 (155)</div>
-          <div class="vendor-price">From EGP 45/guest</div>
-        </div>
-        <button onclick="event.stopPropagation();openWhatsApp('vendor',this.closest('.vendor-card').querySelector('.vendor-name').textContent)" style="display:flex;align-items:center;justify-content:center;gap:.45rem;width:100%;background:#f0faf4;color:#1a7a45;border:1px solid #b5e0c5;border-radius:8px;padding:.5rem;font-size:.78rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background .2s" onmouseover="this.style.background='#d8f5e5'" onmouseout="this.style.background='#f0faf4'"><svg style="width:14px;height:14px;fill:#25D366" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Quick WhatsApp Inquiry</button>
-      </div>
-    </div>
-
-    <div class="vendor-card" data-cat="outdoor" onclick="showVendorProfile('Open Air Events')">
-      <div class="vendor-cover vc5"><div class="vendor-badge">🌿 Outdoor</div>⛺</div>
-      <div class="vendor-body">
-        <div class="vendor-cat">Outdoor Specialist</div>
-        <div class="vendor-name">Open Air Events</div>
-        <p class="vendor-desc">Experts in outdoor setups including marquee tents, garden lighting, and weather-contingency planning for seamless open-air celebrations.</p>
-        <div class="vendor-footer" style="flex-direction:column;gap:.65rem">
-          <div class="vendor-rating"><span class="vendor-stars">★★★★★</span> 4.7 (78)</div>
-          <div class="vendor-price">From EGP 600</div>
-        </div>
-        <button onclick="event.stopPropagation();openWhatsApp('vendor',this.closest('.vendor-card').querySelector('.vendor-name').textContent)" style="display:flex;align-items:center;justify-content:center;gap:.45rem;width:100%;background:#f0faf4;color:#1a7a45;border:1px solid #b5e0c5;border-radius:8px;padding:.5rem;font-size:.78rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background .2s" onmouseover="this.style.background='#d8f5e5'" onmouseout="this.style.background='#f0faf4'"><svg style="width:14px;height:14px;fill:#25D366" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Quick WhatsApp Inquiry</button>
-      </div>
-    </div>
-
-    <div class="vendor-card" data-cat="planner" onclick="showVendorProfile('The Event Atelier')">
-      <div class="vendor-cover vc6">📋</div>
-      <div class="vendor-body">
-        <div class="vendor-cat">Event Planner</div>
-        <div class="vendor-name">The Event Atelier</div>
-        <p class="vendor-desc">Full-service event planning with meticulous attention to detail. From concept to execution, we handle everything so you don't have to.</p>
-        <div class="vendor-footer" style="flex-direction:column;gap:.65rem">
-          <div class="vendor-rating"><span class="vendor-stars">★★★★★</span> 5.0 (61)</div>
-          <div class="vendor-price">From EGP 2,000</div>
-        </div>
-        <button onclick="event.stopPropagation();openWhatsApp('vendor',this.closest('.vendor-card').querySelector('.vendor-name').textContent)" style="display:flex;align-items:center;justify-content:center;gap:.45rem;width:100%;background:#f0faf4;color:#1a7a45;border:1px solid #b5e0c5;border-radius:8px;padding:.5rem;font-size:.78rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background .2s" onmouseover="this.style.background='#d8f5e5'" onmouseout="this.style.background='#f0faf4'"><svg style="width:14px;height:14px;fill:#25D366" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Quick WhatsApp Inquiry</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- JOIN VENDOR -->
-  <div class="join-vendor-section" style="margin:0 5vw 5rem">
-    <div class="join-inner">
+    <!-- HERO -->
+    <section class="hero">
       <div>
-        <div class="section-tag">For Vendors</div>
-        <h2 class="section-title">Join our <em>community</em> for free</h2>
-        <p class="section-sub">List your services, showcase your portfolio, and connect with clients who are actively looking for exactly what you offer.</p>
-        <div class="join-perks">
-          <div class="perk">
-            <div class="perk-icon">🆓</div>
-            <div class="perk-text"><strong>Zero cost to join</strong>No sign-up fees, no commission, ever.</div>
+        <h1 class="fade-up-delay">Your <em>dream event</em>, designed in minutes.</h1>
+        <p class="hero-sub fade-up-delay2">Upload your venue, describe your vision — and let our AI generate a stunning
+          event design with perfectly matched vendors, all in one place.</p>
+        <div class="hero-actions fade-up-delay2">
+          <button class="btn-primary" onclick="showPage('design-tool')">Start Designing Free →</button>
+          <button class="btn-outline" onclick="showPage('vendors')">Explore Vendors</button>
+        </div>
+        <div class="hero-trust fade-up-delay2">
+          <div class="trust-avatars">
+            <span class="ta1">SR</span>
+            <span class="ta2">LM</span>
+            <span class="ta3">AK</span>
+            <span class="ta4">NJ</span>
           </div>
-          <div class="perk">
-            <div class="perk-icon">👁️</div>
-            <div class="perk-text"><strong>Strong platform visibility</strong>Get discovered by thousands of event planners monthly.</div>
+          <p class="trust-text"><strong>2,400+</strong> events planned this month</p>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-card-main fade-up">
+          <div class="hero-img-placeholder" style="background: none;">
+            <img src="images/Wedding.png" alt="Wedding Event Setting"
+              style="width: 100%; height: 100%; object-fit: cover;" />
           </div>
-          <div class="perk">
-            <div class="perk-icon">💬</div>
-            <div class="perk-text"><strong>Direct client inquiries</strong>Receive messages directly — no intermediary.</div>
+          <div class="hero-card-info">
+            <div>
+              <div class="event-tag">Wedding</div>
+              <div class="event-name">Sofia & James</div>
+              <div class="event-date">June 14, 2025 · Garden Venue</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:.72rem;color:var(--text-light);margin-bottom:.2rem">Theme</div>
+              <div style="font-size:.875rem;font-weight:500">Soft Romance</div>
+            </div>
           </div>
-          <div class="perk">
-            <div class="perk-icon">🤖</div>
-            <div class="perk-text"><strong>AI-matched to events</strong>Our system recommends you for events that fit your style.</div>
+        </div>
+        <div class="floating-cards">
+          <div class="fcard">
+
+            <div class="fcard-label">Color Palette</div>
+            <div style="display:flex;gap:6px;margin-top:.3rem">
+              <span
+                style="width:18px;height:18px;background:#f9e8ec;border-radius:50%;border:1px solid var(--border)"></span>
+              <span
+                style="width:18px;height:18px;background:#f0c4d0;border-radius:50%;border:1px solid var(--border)"></span>
+              <span
+                style="width:18px;height:18px;background:#e8ddd1;border-radius:50%;border:1px solid var(--border)"></span>
+            </div>
+          </div>
+          <div class="fcard">
+
+            <div class="fcard-label">Vendors Matched</div>
+            <div class="fcard-value">6 specialists</div>
           </div>
         </div>
       </div>
-      <div class="join-form">
-        <h3>Create Your Vendor Profile</h3>
-        <div class="form-row">
-          <div><input class="form-input" type="text" placeholder="Business Name" style="width:100%"/></div>
-          <div><input class="form-input" type="email" placeholder="Email Address" style="width:100%"/></div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="how-it-works">
+      <div class="section-tag">How it works</div>
+      <h2 class="section-title">Three steps to your <em>perfect event</em></h2>
+      <p class="section-sub">Our streamlined process takes you from a blank canvas to a fully designed event with vendor
+        recommendations in minutes.</p>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-connector"></div>
+          <div class="step-num">01</div>
+          <div class="step-icon"><img src="images/1.png" alt="Upload Venue" style="width: 100%; height: 220px; object-fit: cover; border-radius: var(--radius); display: block; box-shadow: 0 8px 24px rgba(100, 60, 50, 0.08);" /></div>
+          <div class="step-title">Upload Your Venue</div>
+          <p class="step-text">Share a photo of your venue space and let us understand the layout, lighting, and
+            architectural details to work with.</p>
         </div>
-        <div class="form-field">
-          <select class="form-input">
-            <option>Service Category</option>
-            <option>Decorator</option>
-            <option>Photographer</option>
-            <option>Florist</option>
-            <option>Caterer</option>
-            <option>Event Planner</option>
-            <option>Outdoor Specialist</option>
-            <option>Other</option>
+        <div class="step-card">
+          <div class="step-connector"></div>
+          <div class="step-num">02</div>
+          <div class="step-icon"><img src="images/2.png" alt="Describe Vision" style="width: 100%; height: 220px; object-fit: cover; border-radius: var(--radius); display: block; box-shadow: 0 8px 24px rgba(100, 60, 50, 0.08);" /></div>
+          <div class="step-title">Describe Your Vision</div>
+          <p class="step-text">Tell us your dream aesthetic — theme, colors, style, mood. The more detail, the more
+            personalized.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">03</div>
+          <div class="step-icon"><img src="images/3.png" alt="Get Design" style="width: 100%; height: 220px; object-fit: cover; border-radius: var(--radius); display: block; box-shadow: 0 8px 24px rgba(100, 60, 50, 0.08);" /></div>
+          <div class="step-title">Get Your Design & Vendors</div>
+          <p class="step-text">Receive a realistic design mockup of your event along with a curated list of trusted
+            vendors perfectly matched to your style and budget.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- EVENT TYPES -->
+    <section class="event-types">
+      <div class="section-tag">Occasions</div>
+      <h2 class="section-title">Every <em>celebration</em> deserves to be special</h2>
+      <p class="section-sub">From intimate proposals to grand weddings — we design experiences for every milestone that
+        matters.</p>
+      <div class="types-grid" style="margin-top:2.5rem">
+        <div class="type-pill active" onclick="selectType(this)">
+          <div class="type-icon"><img src="images/Wedding.png" alt="Wedding" /></div>
+          <div class="type-name">Wedding</div>
+          <div class="type-count">340 vendors</div>
+        </div>
+        <div class="type-pill" onclick="selectType(this)">
+          <div class="type-icon"><img src="images/Birthday.png" alt="Birthday" /></div>
+          <div class="type-name">Birthday</div>
+          <div class="type-count">280 vendors</div>
+        </div>
+        <div class="type-pill" onclick="selectType(this)">
+          <div class="type-icon"><img src="images/Engagement.png" alt="Engagement" /></div>
+          <div class="type-name">Engagement</div>
+          <div class="type-count">190 vendors</div>
+        </div>
+        <div class="type-pill" onclick="selectType(this)">
+          <div class="type-icon"><img src="images/Proposal.png" alt="Proposal" /></div>
+          <div class="type-name">Proposal</div>
+          <div class="type-count">120 vendors</div>
+        </div>
+        <div class="type-pill" onclick="selectType(this)">
+          <div class="type-icon"><img src="images/Graduation.png" alt="Graduation" /></div>
+          <div class="type-name">Graduation</div>
+          <div class="type-count">160 vendors</div>
+        </div>
+        <div class="type-pill" onclick="selectType(this)">
+          <div class="type-icon"><img src="images/Corporate.png" alt="Corporate" /></div>
+          <div class="type-name">Corporate</div>
+          <div class="type-count">210 vendors</div>
+        </div>
+        <div class="type-pill" onclick="selectType(this)">
+          <div class="type-icon"><img src="images/Baby Shower.png" alt="Baby Shower" /></div>
+          <div class="type-name">Baby Shower</div>
+          <div class="type-count">95 vendors</div>
+        </div>
+        <div class="type-pill" onclick="selectType(this)">
+          <div class="type-icon"><img src="images/other.png" alt="Other" /></div>
+          <div class="type-name">Other</div>
+          <div class="type-count">Any occasion</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features-section">
+      <div class="section-tag">Platform Features</div>
+      <h2 class="section-title">Everything you need, <em>all in one place</em></h2>
+      <div class="features-grid">
+        <div class="feature-card">
+
+          <div class="feature-title">Smart Vendor Matching</div>
+          <p class="feature-desc">Our system automatically recommends the most suitable vendors based on your event
+            type, aesthetic, and requirements — no searching needed.</p>
+        </div>
+        <div class="feature-card">
+
+          <div class="feature-title">Completely Free</div>
+          <p class="feature-desc">Both users and vendors use EventVision at zero cost. No hidden fees, no subscriptions
+            — just beautiful events made accessible to everyone.</p>
+        </div>
+        <div class="feature-card">
+
+          <div class="feature-title">Outdoor Specialists</div>
+          <p class="feature-desc">Planning an outdoor event? We connect you with specialists experienced in garden
+            parties, beach ceremonies, and open-air celebrations.</p>
+        </div>
+        <div class="feature-card">
+
+          <div class="feature-title">Full Event Package</div>
+          <p class="feature-desc">Beyond design, get detailed setup ideas, materials checklists, and a full plan
+            covering every element your event will need.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="testimonials">
+      <div class="section-tag">Stories</div>
+      <h2 class="section-title">Moments turned into <em>memories</em></h2>
+      <div class="testi-grid">
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-quote">"I uploaded our garden venue and within two minutes had a design mockup that made me
+            cry. It was exactly what I'd been imagining for years."</p>
+          <div class="testi-author">
+            <div class="testi-avatar" style="background:linear-gradient(135deg,#d48a9e,#a85870)">SR</div>
+            <div>
+              <div class="testi-name">Sara Rahman</div>
+              <div class="testi-event">Wedding · Cairo</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-quote">"As a florist on the platform, I've received more inquiries in one month than I had all
+            last year. The visibility is incredible and signing up was completely free."</p>
+          <div class="testi-author">
+            <div class="testi-avatar" style="background:linear-gradient(135deg,#c9b89e,#a89070)">LM</div>
+            <div>
+              <div class="testi-name">Laila Mostafa</div>
+              <div class="testi-event">Florist & Vendor</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-quote">"We planned my daughter's 18th birthday in an afternoon. The baby pink and beige theme
+            came out so beautifully — guests thought we'd hired a professional planner!"</p>
+          <div class="testi-author">
+            <div class="testi-avatar" style="background:linear-gradient(135deg,#b0c4de,#7898b8)">NA</div>
+            <div>
+              <div class="testi-name">Nadia Al-Farsi</div>
+              <div class="testi-event">Birthday · Dubai</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <div class="cta-banner">
+      <h2>Your event deserves to be <em>unforgettable</em></h2>
+      <p>Start designing for free today — no signup required for your first design.</p>
+      <div class="cta-actions">
+        <button class="btn-white" onclick="showPage('design-tool')">Start Designing Free</button>
+        <button class="btn-ghost" onclick="showPage('vendors')">Browse Vendors</button>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <span class="logo">Event<span>Vision</span></span>
+          <p>AI-powered event design and vendor matching — making every celebration effortlessly beautiful.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Platform</h4>
+          <ul>
+            <li><a href="#" onclick="showPage('design-tool')">Design Tool</a></li>
+            <li><a href="#" onclick="showPage('vendors')">Vendors</a></li>
+            <li><a href="#" onclick="showPage('vendors')">Join as Vendor</a></li>
+            <li><a href="#" onclick="showPage('about')">About Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Occasions</h4>
+          <ul>
+            <li><a href="#">Weddings</a></li>
+            <li><a href="#">Birthdays</a></li>
+            <li><a href="#">Engagements</a></li>
+            <li><a href="#">Proposals</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2025 EventVision. All rights reserved.</span>
+        <span>Made with ♡ for every celebration</span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ═══════════ DESIGN TOOL ═══════════ -->
+  <div class="page" id="design-tool">
+    <div class="tool-header">
+      <div class="section-tag">Design Tool</div>
+      <h1 class="section-title">Design your <em>event</em></h1>
+      <p class="section-sub" style="margin-inline:auto;text-align:center">Upload your venue, describe your vision, and
+        watch the magic happen.</p>
+    </div>
+
+    <div class="tool-layout">
+      <div class="tool-form">
+        <div class="form-section">
+          <label class="form-label">Venue Photo</label>
+          <div class="upload-zone" onclick="showToast('Photo upload ready in full version')">
+            <div class="upload-icon">📷</div>
+            <div class="upload-text">
+              <strong>Click to upload or drag & drop</strong>
+              JPG, PNG up to 10MB
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <label class="form-label">Event Type</label>
+          <select class="form-input" style="cursor:pointer">
+            <option>💍 Wedding</option>
+            <option>🎂 Birthday</option>
+            <option>💎 Engagement</option>
+            <option>🌹 Proposal</option>
+            <option>🎓 Graduation</option>
+            <option>🍾 Corporate Event</option>
+            <option>🌸 Baby Shower</option>
+            <option>✨ Other</option>
           </select>
         </div>
-        <div class="form-field">
-          <input class="form-input" type="text" placeholder="City / Location"/>
+
+        <div class="form-section">
+          <label class="form-label">Describe Your Vision</label>
+          <textarea class="form-input form-textarea"
+            placeholder="e.g. I want a soft romantic outdoor wedding with hanging lights, floral arches, and a candlelit dinner setting. The mood should feel dreamy and intimate..."></textarea>
         </div>
-        <div class="form-field">
-          <textarea class="form-input" style="min-height:80px" placeholder="Brief description of your services..."></textarea>
-        </div>
-        <button class="inquiry-btn" onclick="openWhatsApp('join', document.querySelector('.join-form input[type=text]').value)">Create Free Profile →</button>
-      </div>
-    </div>
-  </div>
 
-  <footer>
-    <div class="footer-bottom" style="border-top:1px solid rgba(255,255,255,.08);padding-top:1.5rem">
-      <span>© 2025 EventVision.</span>
-      <button class="btn-ghost" style="font-size:.8rem;padding:.4rem 1rem" onclick="showPage('home')">← Back to Home</button>
-    </div>
-  </footer>
-</div>
-
-<!-- ═══════════ ABOUT ═══════════ -->
-<div class="page" id="about">
-  <div class="about-hero">
-    <div class="about-content">
-      <div class="section-tag">Our Story</div>
-      <h1>We believe every <em>celebration</em> deserves to be beautiful</h1>
-      <p>EventVision was born from a simple frustration: planning a meaningful event was unnecessarily complex, expensive, and exhausting. We set out to change that.</p>
-      <p style="margin-top:.85rem">By combining the power of artificial intelligence with a community of passionate, talented vendors, we've created a platform where anyone — regardless of budget, time, or design expertise — can plan an event they'll be proud of.</p>
-      <p style="margin-top:.85rem">We are entirely free for both users and vendors. Our mission is access — every birthday, wedding, and celebration deserves the same quality of thought and design.</p>
-      <div class="hero-actions" style="margin-top:2rem">
-        <button class="btn-primary" onclick="showPage('design-tool')">Start Designing</button>
-        <button class="btn-outline" onclick="showPage('vendors')">Meet Our Vendors</button>
-      </div>
-    </div>
-    <div class="about-visual">
-      <div class="about-img">🌸</div>
-      <div class="about-caption">
-        <div class="about-caption-title">Built for every occasion</div>
-        <div class="about-caption-sub">Weddings, birthdays, engagements, proposals & more</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="values-section">
-    <div class="section-tag">Our Values</div>
-    <h2 class="section-title">What we <em>stand for</em></h2>
-    <div class="values-grid">
-      <div class="value-card">
-        <div class="value-icon">💡</div>
-        <div class="value-title">Accessibility First</div>
-        <p class="value-text">Beautiful event planning should not be a luxury. We've removed every barrier — no fees, no complex tools, no experience required.</p>
-      </div>
-      <div class="value-card">
-        <div class="value-icon">🤝</div>
-        <div class="value-title">Community Driven</div>
-        <p class="value-text">Our vendors are the heart of EventVision. We champion talented independent professionals and give them the visibility they deserve.</p>
-      </div>
-      <div class="value-card">
-        <div class="value-icon">✨</div>
-        <div class="value-title">Beauty in Every Detail</div>
-        <p class="value-text">We believe the details matter. From the palette we suggest to the vendors we recommend, every choice is made with intention and care.</p>
-      </div>
-      <div class="value-card">
-        <div class="value-icon">🚀</div>
-        <div class="value-title">Effortless Experience</div>
-        <p class="value-text">Planning an event should feel exciting, not stressful. We automate the hard parts so you can focus on enjoying the journey.</p>
-      </div>
-      <div class="value-card">
-        <div class="value-icon">🔒</div>
-        <div class="value-title">Trust & Quality</div>
-        <p class="value-text">Every vendor on our platform is reviewed and verified. We maintain high standards so you can book with complete confidence.</p>
-      </div>
-      <div class="value-card">
-        <div class="value-icon">🌍</div>
-        <div class="value-title">For Every Culture</div>
-        <p class="value-text">Celebrations look different around the world. Our platform embraces every tradition, culture, and style with equal love and care.</p>
-      </div>
-    </div>
-  </div>
-
-  <section class="team-section">
-    <div class="section-tag">The Team</div>
-    <h2 class="section-title">The <em>people</em> behind EventVision</h2>
-    <div class="team-grid">
-      <div class="team-card">
-        <div class="team-photo tp1">👩‍💼</div>
-        <div class="team-info">
-          <div class="team-name">Layla Hassan</div>
-          <div class="team-role">Co-Founder & CEO</div>
-        </div>
-      </div>
-      <div class="team-card">
-        <div class="team-photo tp2">👨‍💻</div>
-        <div class="team-info">
-          <div class="team-name">Omar Khalil</div>
-          <div class="team-role">Co-Founder & CTO</div>
-        </div>
-      </div>
-      <div class="team-card">
-        <div class="team-photo tp3">👩‍🎨</div>
-        <div class="team-info">
-          <div class="team-name">Nour El-Din</div>
-          <div class="team-role">Head of Design</div>
-        </div>
-      </div>
-      <div class="team-card">
-        <div class="team-photo tp4">👩‍💼</div>
-        <div class="team-info">
-          <div class="team-name">Rania Sayed</div>
-          <div class="team-role">Vendor Relations</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="cta-banner">
-    <h2>Ready to plan your <em>next event?</em></h2>
-    <p>Join thousands of people who've already created beautiful events with EventVision.</p>
-    <div class="cta-actions">
-      <button class="btn-white" onclick="showPage('design-tool')">Start Free →</button>
-      <button class="btn-ghost" onclick="showPage('vendors')">Browse Vendors</button>
-    </div>
-  </div>
-
-  <footer>
-    <div class="footer-bottom" style="border-top:1px solid rgba(255,255,255,.08);padding-top:1.5rem">
-      <span>© 2025 EventVision.</span>
-      <button class="btn-ghost" style="font-size:.8rem;padding:.4rem 1rem" onclick="showPage('home')">← Back to Home</button>
-    </div>
-  </footer>
-</div>
-
-<!-- ═══════════ VENDOR PROFILE ═══════════ -->
-<div class="page" id="vendor-profile">
-  <div class="profile-header">
-    <div style="margin-bottom:1rem"><button class="btn-outline" style="font-size:.8rem;padding:.45rem 1.1rem" onclick="showPage('vendors')">← Back to Vendors</button></div>
-    <div class="profile-top">
-      <div class="profile-avatar vc1" style="font-size:2.2rem">🌸</div>
-      <div class="profile-meta">
-        <div class="vendor-cat">Decorator</div>
-        <h1 id="profileName">Bloom & Co. Decor</h1>
-        <p>Specializing in soft, floral-forward event designs with a signature baby pink and beige palette. Award-winning decorator with over 500 events beautifully executed across Cairo, Dubai, and Beirut.</p>
-        <div class="profile-stats">
-          <div class="pstat">
-            <div class="pstat-num">500+</div>
-            <div class="pstat-label">Events</div>
-          </div>
-          <div class="pstat">
-            <div class="pstat-num">4.9</div>
-            <div class="pstat-label">Rating</div>
-          </div>
-          <div class="pstat">
-            <div class="pstat-num">127</div>
-            <div class="pstat-label">Reviews</div>
-          </div>
-          <div class="pstat">
-            <div class="pstat-num">7yr</div>
-            <div class="pstat-label">Experience</div>
+        <div class="form-section">
+          <label class="form-label">Preferred Color Palette</label>
+          <div class="color-swatches">
+            <div class="swatch selected" style="background:#f9e8ec;border-color:var(--pink-dark)" title="Baby Pink"
+              onclick="selectSwatch(this)"></div>
+            <div class="swatch" style="background:#f7f2ec" title="Beige" onclick="selectSwatch(this)"></div>
+            <div class="swatch" style="background:#e8ddd1" title="Warm Nude" onclick="selectSwatch(this)"></div>
+            <div class="swatch" style="background:#e8e4f8" title="Lavender" onclick="selectSwatch(this)"></div>
+            <div class="swatch" style="background:#d4e8d8" title="Sage Green" onclick="selectSwatch(this)"></div>
+            <div class="swatch" style="background:#f8f0e0" title="Champagne" onclick="selectSwatch(this)"></div>
+            <div class="swatch" style="background:#2a1f1a" title="Deep Mocha" onclick="selectSwatch(this)"></div>
+            <div class="swatch" style="background:#b8c8d8" title="Dusty Blue" onclick="selectSwatch(this)"></div>
           </div>
         </div>
-        <div class="profile-actions">
-          <button class="btn-primary" onclick="openWhatsApp('vendor', document.getElementById('profileName').textContent)" style="display:flex;align-items:center;gap:.5rem"><svg style="width:16px;height:16px;fill:#fff" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> WhatsApp Inquiry</button>
-          <button class="btn-outline">Save Profile</button>
+
+        <div class="form-section">
+          <label class="form-label">Aesthetic Style</label>
+          <div class="style-grid">
+            <div class="style-btn active" onclick="selectStyle(this)">Elegant</div>
+            <div class="style-btn" onclick="selectStyle(this)">Minimal</div>
+            <div class="style-btn" onclick="selectStyle(this)">Modern</div>
+            <div class="style-btn" onclick="selectStyle(this)">Romantic</div>
+            <div class="style-btn" onclick="selectStyle(this)">Rustic</div>
+            <div class="style-btn" onclick="selectStyle(this)">Bohemian</div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <label class="form-label">Guest Count</label>
+          <input type="number" class="form-input" placeholder="e.g. 80" min="1" />
+        </div>
+
+        <div class="form-section">
+          <label class="form-label">Budget Range</label>
+          <select class="form-input" style="cursor:pointer">
+            <option>Under EGP 5,000</option>
+            <option>EGP 5,000 – EGP 15,000</option>
+            <option>EGP 15,000 – EGP 30,000</option>
+            <option>EGP 30,000 – EGP 60,000</option>
+            <option>EGP 60,000+</option>
+          </select>
+        </div>
+
+        <button class="submit-btn" onclick="generateDesign()">✨ Generate My Event Design</button>
+      </div>
+
+      <div class="tool-preview">
+        <div class="preview-card">
+          <div class="preview-header">
+            <span class="preview-title-sm">Design Preview</span>
+            <span class="preview-status" id="previewStatus">Waiting for input</span>
+          </div>
+          <div class="preview-canvas" id="previewCanvas">
+            <div class="preview-placeholder-icon">🎨</div>
+            <p class="preview-placeholder-text">Fill in your details and click<br /><strong
+                style="color:var(--text)">Generate My Event Design</strong><br />to see your personalized mockup</p>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+    <footer style="margin-top:0">
+      <div class="footer-bottom" style="border-top:1px solid rgba(255,255,255,.08);padding-top:1.5rem">
+        <span>© 2025 EventVision.</span>
+        <button class="btn-ghost" style="font-size:.8rem;padding:.4rem 1rem" onclick="showPage('home')">← Back to
+          Home</button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ═══════════ VENDORS ═══════════ -->
+  <div class="page" id="vendors">
+    <div class="vendors-header">
+      <div class="section-tag">Vendor Marketplace</div>
+      <h1 class="section-title">Find your <em>perfect team</em></h1>
+      <p class="section-sub">Browse trusted professionals curated for every style, budget, and occasion.</p>
+    </div>
+
+    <div class="vendors-filters">
+      <button class="filter-btn active" onclick="filterVendors(this,'all')">All Vendors</button>
+      <button class="filter-btn" onclick="filterVendors(this,'decorator')">Decorators</button>
+      <button class="filter-btn" onclick="filterVendors(this,'photographer')">Photographers</button>
+      <button class="filter-btn" onclick="filterVendors(this,'caterer')">Caterers</button>
+      <button class="filter-btn" onclick="filterVendors(this,'florist')">Florists</button>
+      <button class="filter-btn" onclick="filterVendors(this,'planner')">Planners</button>
+      <button class="filter-btn" onclick="filterVendors(this,'outdoor')">Outdoor Specialists</button>
+    </div>
+
+    <div class="vendors-grid">
+      <div class="vendor-card" data-cat="decorator" onclick="showVendorProfile('Bloom & Co. Decor')">
+        <div class="vendor-cover vc1">
+          <div class="vendor-badge">⭐ Top Rated</div>🌸
+        </div>
+        <div class="vendor-body">
+          <div class="vendor-cat">Decorator</div>
+          <div class="vendor-name">Bloom & Co. Decor</div>
+          <p class="vendor-desc">Specializing in soft, floral-forward event designs with a signature baby pink and beige
+            palette. Known for ethereal balloon installations.</p>
+          <div class="vendor-footer" style="flex-direction:column;gap:.65rem">
+            <div class="vendor-rating"><span class="vendor-stars">★★★★★</span> 4.9 (127)</div>
+            <div class="vendor-price">From EGP 800</div>
+          </div>
+          <button
+            onclick="event.stopPropagation();openWhatsApp('vendor',this.closest('.vendor-card').querySelector('.vendor-name').textContent)"
+            style="display:flex;align-items:center;justify-content:center;gap:.45rem;width:100%;background:#f0faf4;color:#1a7a45;border:1px solid #b5e0c5;border-radius:8px;padding:.5rem;font-size:.78rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background .2s"
+            onmouseover="this.style.background='#d8f5e5'" onmouseout="this.style.background='#f0faf4'"><svg
+              style="width:14px;height:14px;fill:#25D366" viewBox="0 0 24 24">
+              <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+            </svg> Quick WhatsApp Inquiry</button>
+        </div>
+      </div>
+
+      <div class="vendor-card" data-cat="photographer" onclick="showVendorProfile('Golden Hour Studio')">
+        <div class="vendor-cover vc2">
+          <div class="vendor-badge">✦ Featured</div>📷
+        </div>
+        <div class="vendor-body">
+          <div class="vendor-cat">Photographer</div>
+          <div class="vendor-name">Golden Hour Studio</div>
+          <p class="vendor-desc">Award-winning event photography with a timeless, editorial approach. We capture the
+            emotion, not just the moments.</p>
+          <div class="vendor-footer" style="flex-direction:column;gap:.65rem">
+            <div class="vendor-rating"><span class="vendor-stars">★★★★★</span> 5.0 (89)</div>
+            <div class="vendor-price">From EGP 1,200</div>
+          </div>
+          <button
+            onclick="event.stopPropagation();openWhatsApp('vendor',this.closest('.vendor-card').querySelector('.vendor-name').textContent)"
+            style="display:flex;align-items:center;justify-content:center;gap:.45rem;width:100%;background:#f0faf4;color:#1a7a45;border:1px solid #b5e0c5;border-radius:8px;padding:.5rem;font-size:.78rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background .2s"
+            onmouseover="this.style.background='#d8f5e5'" onmouseout="this.style.background='#f0faf4'"><svg
+              style="width:14px;height:14px;fill:#25D366" viewBox="0 0 24 24">
+              <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+            </svg> Quick WhatsApp Inquiry</button>
+        </div>
+      </div>
+
+      <div class="vendor-card" data-cat="florist" onclick="showVendorProfile('Petal & Grace')">
+        <div class="vendor-cover vc3">💐</div>
+        <div class="vendor-body">
+          <div class="vendor-cat">Florist</div>
+          <div class="vendor-name">Petal & Grace</div>
+          <p class="vendor-desc">Bespoke floral arrangements crafted with seasonal blooms. Specializing in ceremony
+            arches, centerpieces, and bridal bouquets.</p>
+          <div class="vendor-footer" style="flex-direction:column;gap:.65rem">
+            <div class="vendor-rating"><span class="vendor-stars">★★★★☆</span> 4.8 (203)</div>
+            <div class="vendor-price">From EGP 350</div>
+          </div>
+          <button
+            onclick="event.stopPropagation();openWhatsApp('vendor',this.closest('.vendor-card').querySelector('.vendor-name').textContent)"
+            style="display:flex;align-items:center;justify-content:center;gap:.45rem;width:100%;background:#f0faf4;color:#1a7a45;border:1px solid #b5e0c5;border-radius:8px;padding:.5rem;font-size:.78rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background .2s"
+            onmouseover="this.style.background='#d8f5e5'" onmouseout="this.style.background='#f0faf4'"><svg
+              style="width:14px;height:14px;fill:#25D366" viewBox="0 0 24 24">
+              <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+            </svg> Quick WhatsApp Inquiry</button>
+        </div>
+      </div>
+
+      <div class="vendor-card" data-cat="caterer" onclick="showVendorProfile('Saveur Catering')">
+        <div class="vendor-cover vc4">🍽️</div>
+        <div class="vendor-body">
+          <div class="vendor-cat">Caterer</div>
+          <div class="vendor-name">Saveur Catering</div>
+          <p class="vendor-desc">Elegant fine-dining and buffet catering services for weddings and corporate events.
+            Customizable menus for any dietary requirement.</p>
+          <div class="vendor-footer" style="flex-direction:column;gap:.65rem">
+            <div class="vendor-rating"><span class="vendor-stars">★★★★★</span> 4.9 (155)</div>
+            <div class="vendor-price">From EGP 45/guest</div>
+          </div>
+          <button
+            onclick="event.stopPropagation();openWhatsApp('vendor',this.closest('.vendor-card').querySelector('.vendor-name').textContent)"
+            style="display:flex;align-items:center;justify-content:center;gap:.45rem;width:100%;background:#f0faf4;color:#1a7a45;border:1px solid #b5e0c5;border-radius:8px;padding:.5rem;font-size:.78rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background .2s"
+            onmouseover="this.style.background='#d8f5e5'" onmouseout="this.style.background='#f0faf4'"><svg
+              style="width:14px;height:14px;fill:#25D366" viewBox="0 0 24 24">
+              <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+            </svg> Quick WhatsApp Inquiry</button>
+        </div>
+      </div>
+
+      <div class="vendor-card" data-cat="outdoor" onclick="showVendorProfile('Open Air Events')">
+        <div class="vendor-cover vc5">
+          <div class="vendor-badge">🌿 Outdoor</div>⛺
+        </div>
+        <div class="vendor-body">
+          <div class="vendor-cat">Outdoor Specialist</div>
+          <div class="vendor-name">Open Air Events</div>
+          <p class="vendor-desc">Experts in outdoor setups including marquee tents, garden lighting, and
+            weather-contingency planning for seamless open-air celebrations.</p>
+          <div class="vendor-footer" style="flex-direction:column;gap:.65rem">
+            <div class="vendor-rating"><span class="vendor-stars">★★★★★</span> 4.7 (78)</div>
+            <div class="vendor-price">From EGP 600</div>
+          </div>
+          <button
+            onclick="event.stopPropagation();openWhatsApp('vendor',this.closest('.vendor-card').querySelector('.vendor-name').textContent)"
+            style="display:flex;align-items:center;justify-content:center;gap:.45rem;width:100%;background:#f0faf4;color:#1a7a45;border:1px solid #b5e0c5;border-radius:8px;padding:.5rem;font-size:.78rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background .2s"
+            onmouseover="this.style.background='#d8f5e5'" onmouseout="this.style.background='#f0faf4'"><svg
+              style="width:14px;height:14px;fill:#25D366" viewBox="0 0 24 24">
+              <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+            </svg> Quick WhatsApp Inquiry</button>
+        </div>
+      </div>
+
+      <div class="vendor-card" data-cat="planner" onclick="showVendorProfile('The Event Atelier')">
+        <div class="vendor-cover vc6">📋</div>
+        <div class="vendor-body">
+          <div class="vendor-cat">Event Planner</div>
+          <div class="vendor-name">The Event Atelier</div>
+          <p class="vendor-desc">Full-service event planning with meticulous attention to detail. From concept to
+            execution, we handle everything so you don't have to.</p>
+          <div class="vendor-footer" style="flex-direction:column;gap:.65rem">
+            <div class="vendor-rating"><span class="vendor-stars">★★★★★</span> 5.0 (61)</div>
+            <div class="vendor-price">From EGP 2,000</div>
+          </div>
+          <button
+            onclick="event.stopPropagation();openWhatsApp('vendor',this.closest('.vendor-card').querySelector('.vendor-name').textContent)"
+            style="display:flex;align-items:center;justify-content:center;gap:.45rem;width:100%;background:#f0faf4;color:#1a7a45;border:1px solid #b5e0c5;border-radius:8px;padding:.5rem;font-size:.78rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background .2s"
+            onmouseover="this.style.background='#d8f5e5'" onmouseout="this.style.background='#f0faf4'"><svg
+              style="width:14px;height:14px;fill:#25D366" viewBox="0 0 24 24">
+              <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+            </svg> Quick WhatsApp Inquiry</button>
         </div>
       </div>
     </div>
+
+    <!-- JOIN VENDOR -->
+    <div class="join-vendor-section" style="margin:0 5vw 5rem">
+      <div class="join-inner">
+        <div>
+          <div class="section-tag">For Vendors</div>
+          <h2 class="section-title">Join our <em>community</em> for free</h2>
+          <p class="section-sub">List your services, showcase your portfolio, and connect with clients who are actively
+            looking for exactly what you offer.</p>
+          <div class="join-perks">
+
+            <div class="perk">
+              <div class="perk-icon">👁️</div>
+              <div class="perk-text"><strong>Strong platform visibility</strong>Get discovered by thousands of event
+                planners monthly.</div>
+            </div>
+            <div class="perk">
+              <div class="perk-icon">💬</div>
+              <div class="perk-text"><strong>Direct client inquiries</strong>Receive messages directly — no
+                intermediary.</div>
+            </div>
+
+          </div>
+        </div>
+        <div class="join-form">
+          <h3>Create Your Vendor Profile</h3>
+          <div class="form-row">
+            <div><input class="form-input" type="text" placeholder="Business Name" style="width:100%" /></div>
+            <div><input class="form-input" type="email" placeholder="Email Address" style="width:100%" /></div>
+          </div>
+          <div class="form-field">
+            <select class="form-input">
+              <option>Service Category</option>
+              <option>Decorator</option>
+              <option>Photographer</option>
+              <option>Florist</option>
+              <option>Caterer</option>
+              <option>Event Planner</option>
+              <option>Outdoor Specialist</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <input class="form-input" type="text" placeholder="City / Location" />
+          </div>
+          <div class="form-field">
+            <textarea class="form-input" style="min-height:80px"
+              placeholder="Brief description of your services..."></textarea>
+          </div>
+          <button class="inquiry-btn"
+            onclick="openWhatsApp('join', document.querySelector('.join-form input[type=text]').value)">Create Free
+            Profile →</button>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-bottom" style="border-top:1px solid rgba(255,255,255,.08);padding-top:1.5rem">
+        <span>© 2025 EventVision.</span>
+        <button class="btn-ghost" style="font-size:.8rem;padding:.4rem 1rem" onclick="showPage('home')">← Back to
+          Home</button>
+      </div>
+    </footer>
   </div>
 
-  <div class="profile-body">
-    <div>
-      <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:400;margin-bottom:1.25rem">Portfolio</h3>
-      <div class="portfolio-grid">
-        <div class="portfolio-item pi1">🌸</div>
-        <div class="portfolio-item pi2">💐</div>
-        <div class="portfolio-item pi3">✨</div>
-        <div class="portfolio-item pi4">🕯️</div>
-        <div class="portfolio-item pi5">🌿</div>
-        <div class="portfolio-item pi6">🎀</div>
+  <!-- ═══════════ ABOUT ═══════════ -->
+  <div class="page" id="about">
+    <div class="about-hero">
+      <div class="about-content">
+        <div class="section-tag">Our Story</div>
+        <h1>We believe every <em>celebration</em> deserves to be beautiful</h1>
+        <p>EventVision was born from a simple frustration: planning a meaningful event was unnecessarily complex,
+          expensive, and exhausting. We set out to change that.</p>
+        <p style="margin-top:.85rem">By combining the power of artificial intelligence with a community of passionate,
+          talented vendors, we've created a platform where anyone — regardless of budget, time, or design expertise —
+          can plan an event they'll be proud of.</p>
+        <p style="margin-top:.85rem">We are entirely free for both users and vendors. Our mission is access — every
+          birthday, wedding, and celebration deserves the same quality of thought and design.</p>
+        <div class="hero-actions" style="margin-top:2rem">
+          <button class="btn-primary" onclick="showPage('design-tool')">Start Designing</button>
+          <button class="btn-outline" onclick="showPage('vendors')">Meet Our Vendors</button>
+        </div>
       </div>
+      <div class="about-visual">
+        <div class="about-img">🌸</div>
+        <div class="about-caption">
+          <div class="about-caption-title">Built for every occasion</div>
+          <div class="about-caption-sub">Weddings, birthdays, engagements, proposals & more</div>
+        </div>
+      </div>
+    </div>
 
-      <div style="margin-top:2rem">
-        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:400;margin-bottom:1.25rem">Client Reviews</h3>
-        <div style="display:flex;flex-direction:column;gap:1rem">
-          <div class="testi-card">
-            <div class="testi-stars">★★★★★</div>
-            <p class="testi-quote">"Bloom & Co. transformed our garden into an absolute fairytale. Every detail was perfect — the arches, the table settings, the lighting. Truly magical."</p>
-            <div class="testi-author">
-              <div class="testi-avatar" style="background:linear-gradient(135deg,#d48a9e,#a85870)">MA</div>
-              <div><div class="testi-name">Mia Al-Amin</div><div class="testi-event">Wedding · Cairo, 2024</div></div>
+    <div class="values-section">
+      <div class="section-tag">Our Values</div>
+      <h2 class="section-title">What we <em>stand for</em></h2>
+      <div class="values-grid">
+        <div class="value-card">
+          <div class="value-icon">💡</div>
+          <div class="value-title">Accessibility First</div>
+          <p class="value-text">Beautiful event planning should not be a luxury. We've removed every barrier — no fees,
+            no complex tools, no experience required.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">🤝</div>
+          <div class="value-title">Community Driven</div>
+          <p class="value-text">Our vendors are the heart of EventVision. We champion talented independent professionals
+            and give them the visibility they deserve.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">✨</div>
+          <div class="value-title">Beauty in Every Detail</div>
+          <p class="value-text">We believe the details matter. From the palette we suggest to the vendors we recommend,
+            every choice is made with intention and care.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">🚀</div>
+          <div class="value-title">Effortless Experience</div>
+          <p class="value-text">Planning an event should feel exciting, not stressful. We automate the hard parts so you
+            can focus on enjoying the journey.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">🔒</div>
+          <div class="value-title">Trust & Quality</div>
+          <p class="value-text">Every vendor on our platform is reviewed and verified. We maintain high standards so you
+            can book with complete confidence.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">🌍</div>
+          <div class="value-title">For Every Culture</div>
+          <p class="value-text">Celebrations look different around the world. Our platform embraces every tradition,
+            culture, and style with equal love and care.</p>
+        </div>
+      </div>
+    </div>
+
+    <section class="team-section">
+      <div class="section-tag">The Team</div>
+      <h2 class="section-title">The <em>people</em> behind EventVision</h2>
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-photo tp1">👩‍💼</div>
+          <div class="team-info">
+            <div class="team-name">Layla Hassan</div>
+            <div class="team-role">Co-Founder & CEO</div>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-photo tp2">👨‍💻</div>
+          <div class="team-info">
+            <div class="team-name">Omar Khalil</div>
+            <div class="team-role">Co-Founder & CTO</div>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-photo tp3">👩‍🎨</div>
+          <div class="team-info">
+            <div class="team-name">Nour El-Din</div>
+            <div class="team-role">Head of Design</div>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-photo tp4">👩‍💼</div>
+          <div class="team-info">
+            <div class="team-name">Rania Sayed</div>
+            <div class="team-role">Vendor Relations</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="cta-banner">
+      <h2>Ready to plan your <em>next event?</em></h2>
+      <p>Join thousands of people who've already created beautiful events with EventVision.</p>
+      <div class="cta-actions">
+        <button class="btn-white" onclick="showPage('design-tool')">Start Free →</button>
+        <button class="btn-ghost" onclick="showPage('vendors')">Browse Vendors</button>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-bottom" style="border-top:1px solid rgba(255,255,255,.08);padding-top:1.5rem">
+        <span>© 2025 EventVision.</span>
+        <button class="btn-ghost" style="font-size:.8rem;padding:.4rem 1rem" onclick="showPage('home')">← Back to
+          Home</button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ═══════════ VENDOR PROFILE ═══════════ -->
+  <div class="page" id="vendor-profile">
+    <div class="profile-header">
+      <div style="margin-bottom:1rem"><button class="btn-outline" style="font-size:.8rem;padding:.45rem 1.1rem"
+          onclick="showPage('vendors')">← Back to Vendors</button></div>
+      <div class="profile-top">
+        <div class="profile-avatar vc1" style="font-size:2.2rem">🌸</div>
+        <div class="profile-meta">
+          <div class="vendor-cat">Decorator</div>
+          <h1 id="profileName">Bloom & Co. Decor</h1>
+          <p>Specializing in soft, floral-forward event designs with a signature baby pink and beige palette.
+            Award-winning decorator with over 500 events beautifully executed across Cairo, Dubai, and Beirut.</p>
+          <div class="profile-stats">
+            <div class="pstat">
+              <div class="pstat-num">500+</div>
+              <div class="pstat-label">Events</div>
+            </div>
+            <div class="pstat">
+              <div class="pstat-num">4.9</div>
+              <div class="pstat-label">Rating</div>
+            </div>
+            <div class="pstat">
+              <div class="pstat-num">127</div>
+              <div class="pstat-label">Reviews</div>
+            </div>
+            <div class="pstat">
+              <div class="pstat-num">7yr</div>
+              <div class="pstat-label">Experience</div>
             </div>
           </div>
-          <div class="testi-card">
-            <div class="testi-stars">★★★★★</div>
-            <p class="testi-quote">"We had a very specific vision for our engagement party and they executed it perfectly. The baby pink and gold palette was everything we hoped for."</p>
-            <div class="testi-author">
-              <div class="testi-avatar" style="background:linear-gradient(135deg,#c9b89e,#a89070)">JR</div>
-              <div><div class="testi-name">Jana Rizk</div><div class="testi-event">Engagement · Beirut, 2024</div></div>
-            </div>
+          <div class="profile-actions">
+            <button class="btn-primary"
+              onclick="openWhatsApp('vendor', document.getElementById('profileName').textContent)"
+              style="display:flex;align-items:center;gap:.5rem"><svg style="width:16px;height:16px;fill:#fff"
+                viewBox="0 0 24 24">
+                <path
+                  d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+              </svg> WhatsApp Inquiry</button>
+            <button class="btn-outline">Save Profile</button>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="profile-sidebar">
-      <div class="sidebar-card">
-        <h3>Service Packages</h3>
-        <div class="package-item">
-          <div><div class="package-name">Essentials</div><div class="package-desc">Table styling & florals</div></div>
-          <div class="package-price">EGP 800</div>
+    <div class="profile-body">
+      <div>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:400;margin-bottom:1.25rem">
+          Portfolio</h3>
+        <div class="portfolio-grid">
+          <div class="portfolio-item pi1">🌸</div>
+          <div class="portfolio-item pi2">💐</div>
+          <div class="portfolio-item pi3">✨</div>
+          <div class="portfolio-item pi4">🕯️</div>
+          <div class="portfolio-item pi5">🌿</div>
+          <div class="portfolio-item pi6">🎀</div>
         </div>
-        <div class="package-item">
-          <div><div class="package-name">Signature</div><div class="package-desc">Full décor + setup</div></div>
-          <div class="package-price">EGP 1,800</div>
-        </div>
-        <div class="package-item">
-          <div><div class="package-name">Premium</div><div class="package-desc">End-to-end + breakdown</div></div>
-          <div class="package-price">EGP 3,200</div>
+
+        <div style="margin-top:2rem">
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:400;margin-bottom:1.25rem">
+            Client Reviews</h3>
+          <div style="display:flex;flex-direction:column;gap:1rem">
+            <div class="testi-card">
+              <div class="testi-stars">★★★★★</div>
+              <p class="testi-quote">"Bloom & Co. transformed our garden into an absolute fairytale. Every detail was
+                perfect — the arches, the table settings, the lighting. Truly magical."</p>
+              <div class="testi-author">
+                <div class="testi-avatar" style="background:linear-gradient(135deg,#d48a9e,#a85870)">MA</div>
+                <div>
+                  <div class="testi-name">Mia Al-Amin</div>
+                  <div class="testi-event">Wedding · Cairo, 2024</div>
+                </div>
+              </div>
+            </div>
+            <div class="testi-card">
+              <div class="testi-stars">★★★★★</div>
+              <p class="testi-quote">"We had a very specific vision for our engagement party and they executed it
+                perfectly. The baby pink and gold palette was everything we hoped for."</p>
+              <div class="testi-author">
+                <div class="testi-avatar" style="background:linear-gradient(135deg,#c9b89e,#a89070)">JR</div>
+                <div>
+                  <div class="testi-name">Jana Rizk</div>
+                  <div class="testi-event">Engagement · Beirut, 2024</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="sidebar-card">
-        <h3>Availability</h3>
-        <p style="font-size:.85rem;color:var(--text-muted);line-height:1.6;font-weight:300">Next available: <strong style="color:var(--text)">June 2025</strong><br/>Booking 3–6 months in advance recommended.</p>
-        <button class="inquiry-btn" style="margin-top:1rem" onclick="openWhatsApp('vendor', document.getElementById('profileName').textContent)" style="display:flex;align-items:center;justify-content:center;gap:.5rem"><svg style="width:16px;height:16px;fill:#fff" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Book via WhatsApp</button>
-      </div>
+      <div class="profile-sidebar">
+        <div class="sidebar-card">
+          <h3>Service Packages</h3>
+          <div class="package-item">
+            <div>
+              <div class="package-name">Essentials</div>
+              <div class="package-desc">Table styling & florals</div>
+            </div>
+            <div class="package-price">EGP 800</div>
+          </div>
+          <div class="package-item">
+            <div>
+              <div class="package-name">Signature</div>
+              <div class="package-desc">Full décor + setup</div>
+            </div>
+            <div class="package-price">EGP 1,800</div>
+          </div>
+          <div class="package-item">
+            <div>
+              <div class="package-name">Premium</div>
+              <div class="package-desc">End-to-end + breakdown</div>
+            </div>
+            <div class="package-price">EGP 3,200</div>
+          </div>
+        </div>
 
-      <div class="sidebar-card">
-        <h3>Specialties</h3>
-        <div style="display:flex;flex-wrap:wrap;gap:.5rem">
-          <span class="event-tag">Weddings</span>
-          <span class="event-tag">Engagements</span>
-          <span class="event-tag">Outdoor</span>
-          <span class="event-tag">Baby Showers</span>
-          <span class="event-tag">Proposals</span>
+        <div class="sidebar-card">
+          <h3>Availability</h3>
+          <p style="font-size:.85rem;color:var(--text-muted);line-height:1.6;font-weight:300">Next available: <strong
+              style="color:var(--text)">June 2025</strong><br />Booking 3–6 months in advance recommended.</p>
+          <button class="inquiry-btn" style="margin-top:1rem"
+            onclick="openWhatsApp('vendor', document.getElementById('profileName').textContent)"
+            style="display:flex;align-items:center;justify-content:center;gap:.5rem"><svg
+              style="width:16px;height:16px;fill:#fff" viewBox="0 0 24 24">
+              <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+            </svg> Book via WhatsApp</button>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>Specialties</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:.5rem">
+            <span class="event-tag">Weddings</span>
+            <span class="event-tag">Engagements</span>
+            <span class="event-tag">Outdoor</span>
+            <span class="event-tag">Baby Showers</span>
+            <span class="event-tag">Proposals</span>
+          </div>
         </div>
       </div>
     </div>
+
+    <footer>
+      <div class="footer-bottom" style="border-top:1px solid rgba(255,255,255,.08);padding-top:1.5rem">
+        <span>© 2025 EventVision.</span>
+        <button class="btn-ghost" style="font-size:.8rem;padding:.4rem 1rem" onclick="showPage('vendors')">← Back to
+          Vendors</button>
+      </div>
+    </footer>
   </div>
 
-  <footer>
-    <div class="footer-bottom" style="border-top:1px solid rgba(255,255,255,.08);padding-top:1.5rem">
-      <span>© 2025 EventVision.</span>
-      <button class="btn-ghost" style="font-size:.8rem;padding:.4rem 1rem" onclick="showPage('vendors')">← Back to Vendors</button>
-    </div>
-  </footer>
-</div>
-
-<script>
-function showPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  const page=document.getElementById(id);
-  if(page){page.classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
-  document.getElementById('navLinks').classList.remove('open');
-}
-
-function toggleMenu(){
-  document.getElementById('navLinks').classList.toggle('open');
-}
-
-const WA_NUMBER='201055443384';
-
-function getWhatsAppUrl(message){
-  const phone = String(WA_NUMBER || '').replace(/[^\d]/g,'');
-  const text = encodeURIComponent(String(message || ''));
-  return 'https://api.whatsapp.com/send?phone='+phone+'&text='+text;
-}
-
-function openWhatsApp(type,context){
-  let msg='';
-  if(type==='vendor'){
-    msg="Hi EventVision! I came across *"+context+"* on your platform and I'd love to get more information and book their services. Please help me get in touch!";
-  } else if(type==='join'){
-    const bname=context||'my business';
-    msg="Hi EventVision! I'd like to join your vendor marketplace with *"+bname+"*. Could you guide me through the sign-up process?";
-  } else if(type==='design'){
-    msg="Hi EventVision! I just used your design tool and I'd love some help with my event planning. Can we chat?";
-  } else {
-    msg="Hi EventVision! I'm interested in planning an event and would love to learn more about your platform. Could you help me get started?";
-  }
-  const url = getWhatsAppUrl(msg);
-  const win = window.open(url,'_blank','noopener,noreferrer');
-  if(!win){
-    window.location.href = url;
-  }
-}
-
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),3500);
-}
-
-function selectType(el){
-  document.querySelectorAll('.type-pill').forEach(p=>p.classList.remove('active'));
-  el.classList.add('active');
-}
-
-function selectSwatch(el){
-  document.querySelectorAll('.swatch').forEach(s=>s.classList.remove('selected'));
-  el.classList.add('selected');
-}
-
-function selectStyle(el){
-  document.querySelectorAll('.style-btn').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');
-}
-
-function filterVendors(btn, cat){
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  document.querySelectorAll('.vendor-card').forEach(card=>{
-    if(cat==='all'||card.dataset.cat===cat){
-      card.style.display='block';
-    } else {
-      card.style.display='none';
+  <script>
+    function showPage(id) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      const page = document.getElementById(id);
+      if (page) { page.classList.add('active'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+      document.getElementById('navLinks').classList.remove('open');
     }
-  });
-}
 
-function showVendorProfile(name){
-  document.getElementById('profileName').textContent=name;
-  showPage('vendor-profile');
-  // update profile WA badge
-  const badge=document.getElementById('profileWaBadge');
-  if(badge) badge.setAttribute('onclick',"openWhatsApp('vendor','"+name+"')");
-}
+    function toggleMenu() {
+      document.getElementById('navLinks').classList.toggle('open');
+    }
 
-function generateDesign(){
-  const status=document.getElementById('previewStatus');
-  const canvas=document.getElementById('previewCanvas');
-  status.textContent='Generating...';
-  canvas.innerHTML='<div style="display:flex;flex-direction:column;align-items:center;gap:1rem"><div style="font-size:2rem;animation:float 1s ease-in-out infinite">✨</div><p style="font-size:.875rem;color:var(--text-muted)">AI is designing your event...</p></div>';
-  setTimeout(()=>{
-    status.textContent='Design Ready';
-    status.style.background='var(--beige)';
-    status.style.color='#4a7a5a';
-    canvas.innerHTML=`
+    const WA_NUMBER = '201055443384';
+
+    function getWhatsAppUrl(message) {
+      const phone = String(WA_NUMBER || '').replace(/[^\d]/g, '');
+      const text = encodeURIComponent(String(message || ''));
+      return 'https://api.whatsapp.com/send?phone=' + phone + '&text=' + text;
+    }
+
+    function openWhatsApp(type, context) {
+      let msg = '';
+      if (type === 'vendor') {
+        msg = "Hi EventVision! I came across *" + context + "* on your platform and I'd love to get more information and book their services. Please help me get in touch!";
+      } else if (type === 'join') {
+        const bname = context || 'my business';
+        msg = "Hi EventVision! I'd like to join your vendor marketplace with *" + bname + "*. Could you guide me through the sign-up process?";
+      } else if (type === 'design') {
+        msg = "Hi EventVision! I just used your design tool and I'd love some help with my event planning. Can we chat?";
+      } else {
+        msg = "Hi EventVision! I'm interested in planning an event and would love to learn more about your platform. Could you help me get started?";
+      }
+      const url = getWhatsAppUrl(msg);
+      const win = window.open(url, '_blank', 'noopener,noreferrer');
+      if (!win) {
+        window.location.href = url;
+      }
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3500);
+    }
+
+    function selectType(el) {
+      document.querySelectorAll('.type-pill').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    function selectSwatch(el) {
+      document.querySelectorAll('.swatch').forEach(s => s.classList.remove('selected'));
+      el.classList.add('selected');
+    }
+
+    function selectStyle(el) {
+      document.querySelectorAll('.style-btn').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    function filterVendors(btn, cat) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.vendor-card').forEach(card => {
+        if (cat === 'all' || card.dataset.cat === cat) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function showVendorProfile(name) {
+      document.getElementById('profileName').textContent = name;
+      showPage('vendor-profile');
+      // update profile WA badge
+      const badge = document.getElementById('profileWaBadge');
+      if (badge) badge.setAttribute('onclick', "openWhatsApp('vendor','" + name + "')");
+    }
+
+    function generateDesign() {
+      const status = document.getElementById('previewStatus');
+      const canvas = document.getElementById('previewCanvas');
+      status.textContent = 'Generating...';
+      canvas.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;gap:1rem"><div style="font-size:2rem;animation:float 1s ease-in-out infinite">✨</div><p style="font-size:.875rem;color:var(--text-muted)">AI is designing your event...</p></div>';
+      setTimeout(() => {
+        status.textContent = 'Design Ready';
+        status.style.background = 'var(--beige)';
+        status.style.color = '#4a7a5a';
+        canvas.innerHTML = `
       <div class="preview-mockup" style="width:100%">
         <div class="pm-card"><div class="pm-label">Theme</div><div class="pm-value">Soft Elegance</div></div>
         <div class="pm-card"><div class="pm-label">Primary Color</div><div class="pm-value" style="display:flex;align-items:center;gap:.4rem"><span style="width:14px;height:14px;background:#f9e8ec;border-radius:50%;border:1px solid #f0c4d0;display:inline-block"></span>Baby Pink</div></div>
@@ -1267,9 +3022,10 @@ function generateDesign(){
         <button onclick="showPage('vendors')" style="margin-top:.75rem;background:var(--text);color:var(--white);border:none;border-radius:8px;padding:.5rem 1.1rem;font-size:.8rem;cursor:pointer;font-family:inherit">View Matched Vendors →</button>
       </div>
     `;
-    showToast('Your event design is ready! 🎉');
-  },2200);
-}
-</script>
+        showToast('Your event design is ready! 🎉');
+      }, 2200);
+    }
+  </script>
 </body>
+
 </html>
